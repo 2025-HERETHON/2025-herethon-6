@@ -1,0 +1,17 @@
+.navbar {
+    display: flex;
+    background: #E0F1FF;
+    width: 402px;
+    height: 69px;
+    gap: 80px;
+    align-items: center;
+    bottom: 0;
+    justify-content: space-around;
+    border-radius: 0 0 30px 30px;
+    position: absolute;
+}
+
+button {
+    background: none;
+    border: none;
+}
