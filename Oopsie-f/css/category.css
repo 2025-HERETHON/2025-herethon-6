@@ -166,13 +166,17 @@
     display: flex;
     justify-content: flex-end;
     margin-right: 19;
-    gap: 10;
     color: #000;
     font-family: Inter;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
+}
+
+.sortBtn.active {
+    font-weight: bold;
+    color: #000;
 }
 
 .moment {
