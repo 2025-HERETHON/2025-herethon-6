@@ -129,6 +129,7 @@
     margin-top: 20px;
     display: flex;
     flex-direction: column;
+    padding: 20 0 0 0;
 }
 
 .profile {
@@ -148,6 +149,11 @@
 
 .if {
     width: 361px;
+}
+
+/* 마지막 항목은 line 제거 */
+.if:last-child {
+    width: 0;
 }
 
 .moments {
