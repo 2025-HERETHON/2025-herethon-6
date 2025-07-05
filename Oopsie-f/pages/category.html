@@ -62,8 +62,12 @@
             <!--전체 글 목록-->
             <div class="moments">
                 <div class="order">
-                    인기순
-                    <img src="/images/polygon.svg" alt="polygon">
+                    <a href="?type={{ category.name }}&sort=popular">
+                        <button class="sortBtn">인기순</button>
+                    </a>
+                    <a href="?type={{ category.name }}&sort=latest">
+                        <button class="sortBtn">최신순</button>
+                    </a>
                 </div>
                 <hr />
                 <!--img, title 데이터 삽입-->
