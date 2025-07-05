@@ -1,0 +1,157 @@
+.header {
+    width: 402px;
+    height: 184px;
+    flex-shrink: 0;
+    background: #E0F1FF;
+    background-image: url(/images/main.svg);
+    background-repeat: no-repeat;
+    background-position: bottom;
+    border-radius: 30px 30px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 17px;
+}
+
+.top {
+    display: flex;
+    width: 377px;
+    justify-content: space-between;
+    margin-top: 26px;
+    margin-left: 19px;
+}
+
+.tab {
+    display: flex;
+    gap: 11px;
+}
+
+#btn {
+    cursor: pointer;
+}
+
+.categories {
+    width: 350px;
+    flex-shrink: 0;
+    gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); 
+    overflow-y: auto;
+    margin-top: 16px;
+}
+
+.categories a button {
+    width: 80px;
+    height: 40px;
+    flex-shrink: 0;
+    background-color: #fff;
+    border-radius: 31px;
+    border: 1px solid #B0B9C2;
+    color: #000;
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#popular {
+    margin-bottom: 47px;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 361px;
+    margin-left: 19px;
+}
+
+span {
+    color: #358FFF;
+font-family: Pretendard;
+font-size: 20px;
+font-style: normal;
+font-weight: 700;
+line-height: normal;
+}
+
+.post {
+    margin-left: 19px;
+}
+
+.categoryName {
+    color: #358FFF;
+    font-family: Inter;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.entire {
+    flex-shrink: 0;
+    border-radius: 31px;
+    border: 1px solid #B0B9C2;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    margin-top: 9px;
+    list-style: none;
+    width: 361px;
+    height: 292px;
+    flex-shrink: 0;
+}
+
+.post-list {
+    width: 361px;
+    height: 270px;
+    flex-shrink: 0;
+    border-radius: 31px;
+    border: 1px solid #B0B9C2;
+    background: #FFF;
+    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-item {
+    padding: 30px 10px 30px 30px;
+    border-bottom: 1px solid #B0B9C2;
+    display: flex;
+    justify-self: center;
+    cursor: pointer;
+}
+
+/* 마지막 항목은 border-bottom 제거 */
+.post-item:last-child {
+    border-bottom: none;
+}
+
+.scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 80px;
+  
+    /* ✅ 스크롤바 숨기기 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+  }
+  
+.scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
