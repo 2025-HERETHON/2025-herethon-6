@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import signup  # 네 회원가입 뷰 이름 맞게 수정
-
+from .views.login import login_view
+from .views.signup import signup_view
 urlpatterns = [
-    path('signup/', signup, name='signup'),
+    path('signup/', signup_view, name='signup'),
+    path('login/', login_view, name='login'),
 ]

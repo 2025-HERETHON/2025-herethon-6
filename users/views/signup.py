@@ -7,7 +7,7 @@ from oopsie.utils import response_error, response_success
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-def signup(request):
+def signup_view(request):
     if request.method != 'POST':
         return response_error("허용되지 않은 요청 방식입니다.", 405)
     
