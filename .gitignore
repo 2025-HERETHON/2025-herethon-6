@@ -7,3 +7,9 @@ db.sqlite3
 .vscode/
 conf.py
 .env
+.png
+.jpg
+.jpeg
+.gif
+
+test.py
