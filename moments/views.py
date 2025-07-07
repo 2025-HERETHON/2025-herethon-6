@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from .models import Image
 from oopsie.utils import response_success, response_error 
-from image_utils import upload_to_s3
+from .image_utils import upload_to_s3
 
 @csrf_exempt
 def images_by_moment(request, moment_id):

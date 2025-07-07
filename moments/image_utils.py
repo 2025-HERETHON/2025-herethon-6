@@ -25,13 +25,12 @@ def upload_to_s3(file):
             settings.AWS_STORAGE_BUCKET_NAME,  # S3 버킷 이름
             filename,                 # 저장할 S3 내 파일 이름
             ExtraArgs={
-                'ACL': 'public-read',  # 퍼블릭으로 설정
                 'ContentType': file.content_type
             }
         )
 
         # URL 생성
-        url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_REGION}.amazonaws.com/{filename}"
+        url = f"https://{settings.AWS_STORAGE_BUCKET_NAME}.s3.{settings.AWS_S3_REGION_NAME}.amazonaws.com/{filename}"
         return url
 
     except Exception as e:
