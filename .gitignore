@@ -6,3 +6,10 @@ db.sqlite3
 *.log
 .vscode/
 conf.py
+.env
+.png
+.jpg
+.jpeg
+.gif
+
+test.py
