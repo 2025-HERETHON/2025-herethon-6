@@ -1,0 +1,6 @@
+asgiref==3.9.0
+Django==5.2.4
+django-storages==1.14.6
+python-decouple==3.8
+sqlparse==0.5.3
+tzdata==2025.2
