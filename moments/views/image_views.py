@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
-from .models import Image
+from ..models import Image
 from oopsie.utils import response_success, response_error 
-from .image_utils import upload_to_s3, delete_from_s3
+from ..image_utils import upload_to_s3, delete_from_s3
 from urllib.parse import urlparse 
 
 # 이미지 CRUD는 글별로 한꺼번에 처리
