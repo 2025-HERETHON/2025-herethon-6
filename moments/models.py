@@ -27,8 +27,8 @@ class Moment(models.Model):
 
 class If(models.Model):
     if_id = models.AutoField(primary_key=True)
-    moment_id = models.OneToOneField(Moment, on_delete=models.CASCADE)
-    content = models.TextField()  # 내가 다시 돌아간다면
+    moment_id = models.OneToOneField(Moment, on_delete=models.CASCADE, related_name="if_moment")
+    if_content = models.TextField()  # 내가 다시 돌아간다면
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
