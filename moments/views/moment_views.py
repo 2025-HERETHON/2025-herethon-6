@@ -4,7 +4,7 @@ from django.views.decorators.http import require_http_methods
 from django.utils.timezone import now
 from ..models import Moment, If, Category, Image
 from oopsie.utils import response_success, response_error
-from ..image_utils import delete_from_s3
+from ..image_utils import upload_to_s3, delete_from_s3
 from urllib.parse import urlparse
 from django.contrib.auth import get_user_model
 
@@ -20,6 +20,7 @@ def moment_root(request):
     else:
         return response_error("허용되지 않은 메서드입니다", code=405)
 
+###############################################################
 # 글 생성
 @csrf_exempt  
 @require_http_methods(["POST"])
@@ -77,7 +78,7 @@ def moment_create(request):
     except Exception as e:
         return response_error(f"서버 오류: {str(e)}", code=500)
 
-
+###############################################################
 # 글 목록조회
 @csrf_exempt
 @require_http_methods(["GET"])
@@ -105,7 +106,7 @@ def moment_list(request):
     except Exception as e:
         return response_error(f"서버 오류: {str(e)}", code=500)
 
-
+###############################################################
 # 글 상세조회
 @csrf_exempt
 @require_http_methods(["GET"])
@@ -154,7 +155,7 @@ def moment_detail(request, moment_id):
     except Exception as e:
         return response_error(f"서버 오류: {str(e)}", code=500)
 
-
+###############################################################
 # 글 수정
 @csrf_exempt
 @require_http_methods(["PUT"])
@@ -170,18 +171,12 @@ def moment_update(request, moment_id):
         if request.user != moment.user_id:
             return response_error("수정 권한이 없습니다", code=403)
 
-        # 요청 본문(JSON) 파싱
-        try:
-            body = json.loads(request.body.decode('utf-8'))
-        except json.JSONDecodeError:
-            return response_error("올바른 JSON 형식이 아닙니다", code=400)
-
-        # 수정할 필드 받기
-        title = body.get('title')
-        content = body.get('content')
-        if_content = body.get('if_content')
-        category_id = body.get('category_id')
-        visibility = body.get('visibility')
+        # 요청 본문 파싱 (multipart/form-data 사용 시 json으로 받으면 안 된다! -> request.POST 사용) # 이미지 때문
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        if_content = request.POST.get('if_content')
+        category_id = request.POST.get('category_id')
+        visibility = request.POST.get('visibility')
 
         # 필수값 확인
         if not all([title, content, if_content, category_id, visibility]):
@@ -206,6 +201,29 @@ def moment_update(request, moment_id):
         if_obj.if_content = if_content
         if_obj.save()
 
+
+        # s3 이미지 처리
+        if request.FILES.getlist('images'):
+
+            # 기존 이미지 삭제 (DB + S3)
+            existing_images = Image.objects.filter(moment_id=moment)
+            for img in existing_images:
+                parsed_url = urlparse(img.image_url)
+                s3_key = parsed_url.path.lstrip('/')
+                delete_from_s3(s3_key)
+            existing_images.delete()
+
+            # 새 이미지 업로드
+            images = request.FILES.getlist('images')
+            for image_file in images:
+                image_url = upload_to_s3(image_file)
+                Image.objects.create(
+                    moment_id=moment,
+                    image_url=image_url,
+                    image_name=image_file.name
+                )
+
+
         # 응답 
         data = {
             "moment_id": moment.id,
@@ -223,7 +241,7 @@ def moment_update(request, moment_id):
     except Exception as e:
         return response_error(f"서버 오류: {str(e)}", code=500)
     
-    
+###############################################################
 # 글 삭제
 @csrf_exempt
 @require_http_methods(["DELETE"])
