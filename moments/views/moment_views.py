@@ -4,6 +4,8 @@ from django.views.decorators.http import require_http_methods
 from django.utils.timezone import now
 from ..models import Moment, If, Category, Image
 from oopsie.utils import response_success, response_error
+from ..image_utils import delete_from_s3
+from urllib.parse import urlparse
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -221,3 +223,38 @@ def moment_update(request, moment_id):
     except Exception as e:
         return response_error(f"서버 오류: {str(e)}", code=500)
     
+    
+# 글 삭제
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def moment_delete(request, moment_id):
+    if not request.user.is_authenticated:
+        return response_error("로그인이 필요합니다", code=401)
+    
+    try:
+        moment = Moment.objects.get(id=moment_id)
+
+        if request.user != moment.user_id:
+            return response_error("삭제 권한이 없습니다", code=403)
+
+        # 연결된 이미지 먼저 삭제 (S3에서 삭제 후 DB에서 삭제하게 됨)
+        images = Image.objects.filter(moment_id=moment)
+        for img in images:
+            parsed_url = urlparse(img.image_url)
+            s3_key = parsed_url.path.lstrip('/')
+            delete_from_s3(s3_key) # S3에서 삭제
+            img.delete() # DB에서 삭제
+
+        # 연결된 If 객제 삭제
+        if_obj = If.objects.get(moment_id=moment)
+        if_obj.delete()
+
+        # moment 자체 삭제
+        moment.delete()
+
+        return response_success(message="글 삭제 완료")
+
+    except Moment.DoesNotExist:
+        return response_error("해당 글이 존재하지 않습니다", code=404)
+    except Exception as e:
+        return response_error(f"서버 오류: {str(e)}", code=500)
