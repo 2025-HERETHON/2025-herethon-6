@@ -14,11 +14,24 @@ User = get_user_model()
 @csrf_exempt
 def moment_root(request): 
     if request.method == "GET":
-        return moment_list(request)       # 글 목록조회
+        return moment_list(request)   
     elif request.method == "POST":
-        return moment_create(request)    # 글 작성
+        return moment_create(request)  
     else:
         return response_error("허용되지 않은 메서드입니다", code=405)
+    
+# GET(글 상세조회), PUT, DELETE 기능 분기
+@csrf_exempt
+def moment_detail_root(request, moment_id):
+    if request.method == "GET":
+        return moment_detail(request, moment_id)
+    elif request.method == "PUT":
+        return moment_update(request, moment_id)
+    elif request.method == "DELETE":
+        return moment_delete(request, moment_id)
+    else:
+        return response_error("허용되지 않은 메서드입니다", code=405)
+
 
 ###############################################################
 # 글 생성
