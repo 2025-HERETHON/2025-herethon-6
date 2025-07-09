@@ -1,4 +1,3 @@
-import json
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.utils.timezone import now
@@ -20,13 +19,11 @@ def moment_root(request):
     else:
         return response_error("허용되지 않은 메서드입니다", code=405)
     
-# GET(글 상세조회), PUT, DELETE 기능 분기
+# GET(글 상세조회), DELETE 기능 분기
 @csrf_exempt
 def moment_detail_root(request, moment_id):
     if request.method == "GET":
         return moment_detail(request, moment_id)
-    elif request.method == "PUT":
-        return moment_update(request, moment_id)
     elif request.method == "DELETE":
         return moment_delete(request, moment_id)
     else:
@@ -38,6 +35,10 @@ def moment_detail_root(request, moment_id):
 @csrf_exempt  
 @require_http_methods(["POST"])
 def moment_create(request):
+    # 임시 로그인 우회 (테스트 전용)
+    #from users.models import CustomUser
+    #request.user = CustomUser.objects.first()  # 가장 첫 번째 유저
+
     if not request.user.is_authenticated:
         return response_error("로그인이 필요합니다", code=401)
 
@@ -46,7 +47,8 @@ def moment_create(request):
     content = request.POST.get('content')
     if_content = request.POST.get('if_content')
     category_id = request.POST.get('category_id')
-    visibility = request.POST.get('visibility', 'public')  
+    visibility = request.POST.get('visibility', 'public') 
+
 
     # 필수 항목 검사
     if not all([title, content, if_content, category_id, visibility]):
@@ -54,8 +56,9 @@ def moment_create(request):
 
     # 카테고리 존재 확인
     try:
-        category = Category.objects.get(id=category_id)
-    except Category.DoesNotExist:
+        category_id = int(category_id)
+        category = Category.objects.get(category_id=category_id)
+    except (ValueError, Category.DoesNotExist):
         return response_error("유효하지 않은 카테고리입니다", code=400)
 
     try:
@@ -79,7 +82,7 @@ def moment_create(request):
         )
 
         # 이미지 파일이 있으면 s3에 업로드
-        if request.FILES.getlist('images'):
+        if request.FILES.getlist('images'): # postman으로 테스트할 때 images라는 필드로 이미지 파일 업로드해야한다는 뜻
             images = request.FILES.getlist('images')
             for image_file in images:
                 image_url = upload_to_s3(image_file)
@@ -92,7 +95,7 @@ def moment_create(request):
         # 응답 data
         # 글 작성 후 바로 글 상세보기 페이지로 넘어가도록 프론트에서 로직을 작성했다는 전제 하의 코드임!
         data = { 
-            "moment_id": moment.id,
+            "moment_id": moment.moment_id,
         }
         return response_success(data, message="글 작성 완료")
 
@@ -116,7 +119,7 @@ def moment_list(request):
         result = []
         for moment in moments:
             result.append({
-                "moment_id": moment.id,
+                "moment_id": moment.moment_id,
                 "title": moment.title,
                 "created_date": moment.created_date,
                 "nickname": moment.user_id.nickname 
@@ -135,26 +138,26 @@ def moment_detail(request, moment_id):
 
     try:
         # Moment 조회 (+ user, category join)
-        moment = Moment.objects.select_related('user_id', 'category_id').get(id=moment_id)
+        moment = Moment.objects.select_related('user_id', 'category_id').get(moment_id=moment_id)
 
         # 비공개 글인 경우
         if moment.visibility == "private" and request.user != moment.user_id:
             return response_error("비공개 글입니다", code=403)
 
         # 연결된 If 가져오기
-        if_content = moment.if_id.if_content  
+        if_content = moment.if_moment.if_content  
 
         # 이미지들 가져오기
         images = Image.objects.filter(moment_id=moment)
         image_list = [{
-            "image_id": img.id,
+            "image_id": img.image_id,
             "image_url": img.image_url,
             "image_name": img.image_name
         } for img in images]
 
         # 응답 데이터
         data = {
-            "moment_id": moment.id,
+            "moment_id": moment.moment_id,
             "title": moment.title,
             "content": moment.content,
             "if_content": if_content,
@@ -179,14 +182,15 @@ def moment_detail(request, moment_id):
 ###############################################################
 # 글 수정
 @csrf_exempt
-@require_http_methods(["PUT"])
 def moment_update(request, moment_id):
+    if request.method != "POST":
+        return response_error("허용되지 않은 요청 방식입니다", code=405)
     if not request.user.is_authenticated:
         return response_error("로그인이 필요합니다", code=401)
 
     try:
         # 수정할 글 불러오기
-        moment = Moment.objects.get(id=moment_id)
+        moment = Moment.objects.get(moment_id=moment_id)
 
         # 수정 권한 체크
         if request.user != moment.user_id:
@@ -197,7 +201,18 @@ def moment_update(request, moment_id):
         content = request.POST.get('content')
         if_content = request.POST.get('if_content')
         category_id = request.POST.get('category_id')
-        visibility = request.POST.get('visibility')
+        visibility = request.POST.get('visibility', 'public')
+        images = request.FILES.getlist('images')
+        
+        '''
+        # 🔍 디버깅용 출력
+        print("title:", title)
+        print("content:", content)
+        print("if_content:", if_content)
+        print("category_id:", category_id)
+        print("visibility:", visibility)
+        print("images:", images)
+'''
 
         # 필수값 확인
         if not all([title, content, if_content, category_id, visibility]):
@@ -205,7 +220,7 @@ def moment_update(request, moment_id):
 
         # 카테고리 유효성 확인
         try:
-            category = Category.objects.get(id=category_id)
+            category = Category.objects.get(category_id=category_id)
         except Category.DoesNotExist:
             return response_error("유효하지 않은 카테고리입니다", code=400)
 
@@ -247,7 +262,7 @@ def moment_update(request, moment_id):
 
         # 응답 
         data = {
-            "moment_id": moment.id,
+            "moment_id": moment.moment_id,
             "title": moment.title,
             "modified_date": moment.modified_date
         }
@@ -271,7 +286,7 @@ def moment_delete(request, moment_id):
         return response_error("로그인이 필요합니다", code=401)
     
     try:
-        moment = Moment.objects.get(id=moment_id)
+        moment = Moment.objects.get(moment_id=moment_id)
 
         if request.user != moment.user_id:
             return response_error("삭제 권한이 없습니다", code=403)
