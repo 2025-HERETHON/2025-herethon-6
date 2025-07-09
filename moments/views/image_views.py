@@ -22,7 +22,7 @@ def images_by_moment(request, moment_id):
                     image_name=image_file.name
                 )
                 result.append({
-                    "image_id": image.id,
+                    "image_id": image.image_id,
                     "image_url": image.image_url,
                     "image_name": image.image_name
                 })
@@ -34,7 +34,7 @@ def images_by_moment(request, moment_id):
     elif request.method == "GET":
         images = Image.objects.filter(moment_id=moment_id)
         result = [{
-            "image_id": img.id,
+            "image_id": img.image_id,
             "image_url": img.image_url,
             "image_name": img.image_name
         } for img in images]
@@ -54,7 +54,7 @@ def images_by_moment(request, moment_id):
                     image_name=image_file.name
                 )
                 result.append({
-                    "image_id": image.id,
+                    "image_id": image.image_id,
                     "image_url": image.image_url,
                     "image_name": image.image_name
                 })
@@ -74,7 +74,7 @@ def images_by_moment(request, moment_id):
 def delete_image(request, moment_id, image_id):
     if request.method == "DELETE":
         try:
-            image = Image.objects.get(id=image_id, moment_id=moment_id)
+            image = Image.objects.get(image_id=image_id, moment_id=moment_id)
 
             # S3에서 삭제
             parsed_url = urlparse(image.image_url)
