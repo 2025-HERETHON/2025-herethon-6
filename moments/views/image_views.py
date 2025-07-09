@@ -1,3 +1,4 @@
+# 이미지 CRUD 뷰
 from django.views.decorators.csrf import csrf_exempt
 from ..models import Image
 from oopsie.utils import response_success, response_error 

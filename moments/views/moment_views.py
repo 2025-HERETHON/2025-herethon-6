@@ -27,16 +27,13 @@ def moment_root(request):
 def moment_create(request):
     if not request.user.is_authenticated:
         return response_error("로그인이 필요합니다", code=401)
-    try:
-        body = json.loads(request.body.decode('utf-8'))
-    except json.JSONDecodeError:
-        return response_error("JSON 형식이 올바르지 않습니다", code=400)
 
-    title = body.get('title')
-    content = body.get('content')  # 실패담
-    if_content = body.get('if_content') # 내가 다시 돌아간다면 
-    category_id = body.get('category_id')
-    visibility = body.get('visibility', 'public')  
+    # 프론트에서 multipart/form-data로 받아와야 동작 가능하다. json만 받아오면 이미지처리 안됨
+    title = request.POST.get('title')
+    content = request.POST.get('content')
+    if_content = request.POST.get('if_content')
+    category_id = request.POST.get('category_id')
+    visibility = request.POST.get('visibility', 'public')  
 
     # 필수 항목 검사
     if not all([title, content, if_content, category_id, visibility]):
@@ -60,13 +57,24 @@ def moment_create(request):
             modified_date=now()
         )
 
-        # If 생성 (1:1 연결)
+        # If 생성 
         If.objects.create(
             moment_id=moment,
             if_content=if_content,
             created_date=now(),
             modified_date=now()
         )
+
+        # 이미지 파일이 있으면 s3에 업로드
+        if request.FILES.getlist('images'):
+            images = request.FILES.getlist('images')
+            for image_file in images:
+                image_url = upload_to_s3(image_file)
+                Image.objects.create(
+                    moment_id=moment,
+                    image_url=image_url,
+                    image_name=image_file.name
+                )        
 
         # 응답 data
         # 글 작성 후 바로 글 상세보기 페이지로 넘어가도록 프론트에서 로직을 작성했다는 전제 하의 코드임!
