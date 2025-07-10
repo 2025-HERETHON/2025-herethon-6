@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Main</title>
     <link rel="stylesheet" href="{% static 'css/common/container.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 </head>
 <body>
     <div class="container">
@@ -38,50 +38,36 @@
                     <img src="{% static 'assets/fire.svg' %}" />
                     전체 인기글
                 </div>
-                <div class="entire"></div>
+                <div class="entire">
+                    {% for moment in top3_overall %}
+                        <div class="moment-item">
+                            <a href="{% url 'moments:moment_detail_view' moment.moment_id %}">{{ moment.title }}</a>
+                        </div>
+                    {% empty %}
+                        <p>인기글이 없습니다.</p>
+                    {% endfor %}
+                </div>
             </div>
 
-            <div class="top3-ex">
-                각 분야의&nbsp;<span>TOP3</span>&nbsp;경험글
+            <div class="name">
+                각 분야의 <span>TOP3</span> 경험글
             </div>
             <div class="post">
-    <!-- 연애 -->
-    <p class="categoryName">연애</p>
-    <div class="post-list">
-        <div class="post-item">
-            <div class="title">
-                1. "남자친구랑 싸웠어요"
+                {% for category, moments in top3_by_category.items %}
+                    <h3>{{ category.name }}</h3>
+                    <ul>
+                        {% for moment in moments %}
+                            <li>
+                                <a href="{% url 'moments:moment_detail_view' moment.moment_id %}">
+                                    <strong>{{ moment.title }}</strong></a>
+                                <span>{{ moment.content|truncatechars:50 }}</span>  <!-- 본문 50자만 표시 -->
+                            </li>
+                        {% empty %}
+                            <li>게시물이 없습니다.</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
             </div>
-            <div class="content-summary">
-                엥..
-            </div>
-        </div>
-        <div class="post-item">
-            <div class="title">
-                2. "차이고도 고백한 나, 레전드.mp4" 
-            </div>
-            <div class="content-summary">
-                좋아하던 사람이 있었는데, 이미 내가 좀 부담스럽다는 말도 은근히 했던 사람… 
-            </div>
-        </div>
-        <div class="post-item">
-            <div class="title">
-                3. "고백 안 했는데 차였어요" 
-            </div>
-            <div class="content-summary">
-                그냥 잘 지내던 친구였는데, 어느 날 갑자기 “우리 그런 사이 아니잖아?”라는 말을 들었어요. 어이없고 당황스러워서 “응, 나 그런 말 한 적 없어…”라고 했는데, 이미 주변 사람들한테 다 퍼진 상태더라고요. 
-            </div>
-        </div>
-    </div>
-
-    <!-- 취업 -->
-    <p class="categoryName">취업</p>
-    <div class="post-list">
-        <div class="post-item">취업 성공했어요!</div>
-        <div class="post-item">면접 후기 공유합니다</div>
-        <div class="post-item">이력서 작성 꿀팁</div>
-    </div>
-</div>
         </div>
 
         <!-- ✅ 내비바는 스크롤 영역 밖에 -->

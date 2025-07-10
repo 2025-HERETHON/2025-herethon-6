@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 User = get_user_model()
 
@@ -44,3 +45,25 @@ class Image(models.Model):
 
     def __str__(self):
         return self.image_name
+    
+class WeeklyTop3Keyword(models.Model):
+    week_start = models.DateField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    keywords = models.JSONField()
+
+    class Meta:
+        unique_together = ('week_start', 'category') # 한 주에 카테고리당 하나만
+
+    def __str__(self):
+        return f"{self.week_start} - {self.category.name}"
+    
+class Like(models.Model):
+    moment = models.ForeignKey(Moment, on_delete=models.CASCADE, related_name='likes')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('moment', 'user')  # 한 유저는 한 글에 좋아요 한 번만 가능
+
+    def __str__(self):
+        return f"{self.user} liked {self.moment.title}"

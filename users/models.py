@@ -22,7 +22,7 @@ class CustomUserManager(BaseUserManager):
         user = self.create_user(email, nickname, password)
         user.is_staff = True
         user.is_superuser = True
-        user.save(using=self.db)
+        user.save(using=self._db)
         return user
     
 class CustomUser(AbstractBaseUser, PermissionsMixin):

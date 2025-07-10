@@ -17,11 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from moments.views.moment_views import main
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('moments/', include('moments.urls')),
     path('pages/moments/', include('moments.pages_urls')), # 페이지 렌더는 pages/로 시작!
-    path('main/', views.main_view, name='main'), 
+    path('main/', main, name='main'), 
 ]
+
