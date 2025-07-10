@@ -1,5 +1,5 @@
 from django.urls import path
-from views.moment_views import (
+from moments.views.moment_views import (
     moment_create_view, moment_list_view, moment_detail_view, moment_update_view
 )
 

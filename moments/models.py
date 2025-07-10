@@ -44,3 +44,14 @@ class Image(models.Model):
 
     def __str__(self):
         return self.image_name
+    
+class WeeklyTop3Keyword(models.Model):
+    week_start = models.DateField()
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    keywords = models.JSONField()
+
+    class Meta:
+        unique_together = ('week_start', 'category') # 한 주에 카테고리당 하나만
+
+    def __str__(self):
+        return f"{self.week_start} - {self.category.name}"
