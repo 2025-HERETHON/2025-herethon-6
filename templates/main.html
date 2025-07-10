@@ -3,25 +3,25 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" name="width=device-width, initial-scale=1.0">
-    <title>Main</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>메인 페이지</title>
     <link rel="stylesheet" href="{% static 'css/common/container.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
 </head>
 <body>
-    <div method="GET" class="container">
+    <div class="container">
         <div class="scroll">
             <div class="header">
                 <div class="top">
-                    <img src="../images/logo.svg" alt="logo">
+                    <img src="{% static 'images/logo.svg' %}" alt="logo" />
                     <div class="tab">
-                        <img id=btn src="../images/search.svg" alt="search">
-                        <img id=btn src="../images/menu.svg" alt="menu">
+                        <img id="btn" src="{% static 'images/search.svg' %}" alt="search" />
+                        <img id="btn" src="{% static 'images/menu.svg' %}" alt="menu" />
                     </div>
                 </div>
                 <div class="categories">
-                    <a href="" value="연애"><button onclick="showTopPosts()">연애</button></a>
+                    <a href=""><button>연애</button></a>
                     <a href="category.html?type=인간관계"><button>인간관계</button></a>
                     <a href="category.html?type=취업/커리어"><button>취업/커리어</button></a>
                     <a href="category.html?type=건강"><button>건강</button></a>
@@ -29,27 +29,49 @@
                     <a href="category.html?type=취미"><button>취미</button></a>
                     <a href="category.html?type=소비"><button>소비</button></a>
                     <a href="category.html?type=기타"><button>기타</button></a>
-                </div>              
+                </div>
             </div>
+
+            <!-- 전체 인기글 Top3 -->
             <div class="box" id="popular">
                 <div class="name">
-                    <img src="../images/fire.svg" />
+                    <img src="{% static 'images/fire.svg' %}" alt="fire icon" />
                     전체 인기글
                 </div>
-                <div class="entire" ></div>
+                <div class="entire">
+                    {% for moment in top3_overall %}
+                        <div class="moment-item">
+                            <h4>{{ moment.title }}</h4>
+                            <p>{{ moment.content|truncatechars:100 }}</p>
+                            <p>좋아요: {{ moment.like_count }}</p>
+                            <p>작성일: {{ moment.created_date|date:"Y-m-d" }}</p>
+                        </div>
+                    {% empty %}
+                        <p>인기글이 없습니다.</p>
+                    {% endfor %}
+                </div>
             </div>
+
+            <!-- 분야별 TOP3 -->
             <div class="name">
                 각 분야의 <span>TOP3</span> 경험글
             </div>
-            <div class="post"></div>
+            <div class="post">
+                {% for category, moments in top3_by_category.items %}
+                    <h3>{{ category.name }}</h3>
+                    <ul>
+                        {% for moment in moments %}
+                            <li>
+                                <strong>{{ moment.title }}</strong> - 좋아요 {{ moment.like_count }}개
+                            </li>
+                        {% empty %}
+                            <li>게시물이 없습니다.</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
         </div>
         <div id="navbar"></div>
     </div>
-
-    
-    <script>
-
-    </script>
-    <script src="../js/main.js"></script>
 </body>
 </html>
