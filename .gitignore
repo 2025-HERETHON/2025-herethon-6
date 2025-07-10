@@ -11,5 +11,5 @@ conf.py
 .jpg
 .jpeg
 .gif
-
+.myvenv/
 test.py
