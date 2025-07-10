@@ -5,6 +5,7 @@ from moments.models import Moment
 from oopsie.utils import response_success, response_error
 from django.utils.timezone import now
 from django.contrib.auth import get_user_model
+from django.shortcuts import redirect
 
 User = get_user_model()
 
@@ -30,6 +31,53 @@ def comment_detail_root(request, moment_id, comment_id):
     
 
 ####################################################
+# 댓글 생성 (POST)
+
+@csrf_exempt
+def comment_create(request, moment_id):
+    # 임시 로그인 우회 (테스트 전용)
+    #from users.models import CustomUser
+    #request.user = CustomUser.objects.first()  # 가장 첫 번째 유저
+
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('login')
+    try:
+        # 게시글 유효성 검사
+        try:
+            moment = Moment.objects.get(moment_id=moment_id)
+        except Moment.DoesNotExist:
+            return response_error("해당 게시글이 존재하지 않습니다", code=404)
+
+        # JSON 파싱
+        body = json.loads(request.body)
+        user_id = body.get('user_id')
+        content = body.get('content')
+
+        if not content:
+            return redirect('moment_detail_view', moment_id=moment_id)
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return response_error("사용자가 존재하지 않습니다", code=404)
+
+        # 댓글 저장
+        Comment.objects.create(
+            moment_id=moment,
+            user_id=user,
+            content=content
+        )
+
+        return redirect('moment_detail_view', moment_id=moment_id)
+
+    except json.JSONDecodeError:
+        return response_error("JSON 형식이 올바르지 않습니다", code=400)
+
+    except Exception as e:
+        return response_error(f"서버 오류: {str(e)}", code=500)
+
+
 # 특정 게시글의 댓글 목록 조회 (GET)
 def comment_list(request, moment_id):
     try:
@@ -51,7 +99,7 @@ def comment_list(request, moment_id):
             for comment in comments
         ]
 
-        return response_success(data={"comments": comment_data})
+        return redirect('moment_detail_view', moment_id=moment_id)
 
     except Moment.DoesNotExist:
         return response_error("해당 게시글이 존재하지 않습니다", code=404)
@@ -59,62 +107,6 @@ def comment_list(request, moment_id):
     except Exception as e:
         return response_error(f"서버 오류: {str(e)}", code=500)
     
-
-# 댓글 생성 (POST)
-
-@csrf_exempt
-def comment_create(request, moment_id):
-    # 임시 로그인 우회 (테스트 전용)
-    #from users.models import CustomUser
-    #request.user = CustomUser.objects.first()  # 가장 첫 번째 유저
-
-    user = request.user
-    if not user.is_authenticated:
-        return response_error("로그인이 필요합니다", code=401)
-    try:
-        # 게시글 유효성 검사
-        try:
-            moment = Moment.objects.get(moment_id=moment_id)
-        except Moment.DoesNotExist:
-            return response_error("해당 게시글이 존재하지 않습니다", code=404)
-
-        # JSON 파싱
-        body = json.loads(request.body)
-        user_id = body.get('user_id')
-        content = body.get('content')
-
-        if not content:
-            return response_error("content는 필수입니다", code=400)
-
-        try:
-            user = User.objects.get(id=user_id)
-        except User.DoesNotExist:
-            return response_error("사용자가 존재하지 않습니다", code=404)
-
-        # 댓글 저장
-        comment = Comment.objects.create(
-            moment_id=moment,
-            user_id=user,
-            content=content
-        )
-
-        return response_success(
-            data={
-                "comment_id": comment.comment_id,
-                "user_nickname": user.nickname,
-                "content": comment.content,
-                "created_date": comment.created_date
-            },
-            message="댓글 작성 완료"
-        )
-
-    except json.JSONDecodeError:
-        return response_error("JSON 형식이 올바르지 않습니다", code=400)
-
-    except Exception as e:
-        return response_error(f"서버 오류: {str(e)}", code=500)
-
-
 
 # 댓글 수정 (POST)
 @csrf_exempt
@@ -155,14 +147,7 @@ def comment_update(request, moment_id, comment_id):
         comment.modified_date = now()
         comment.save()
 
-        return response_success(
-            data={
-                "comment_id": comment.comment_id,
-                "content": comment.content,
-                "modified_date": comment.modified_date
-            },
-            message="댓글 수정 완료"
-        )
+        return redirect('moment_detail_view', moment_id=comment.moment_id.moment_id)
 
     except json.JSONDecodeError:
         return response_error("JSON 형식이 올바르지 않습니다", code=400)
@@ -209,7 +194,7 @@ def comment_delete(request, moment_id, comment_id):
         # 삭제
         comment.delete()
 
-        return response_success(message="댓글 삭제 완료")
+        return redirect('moment_list_view', moment_id=moment_id)
 
     except json.JSONDecodeError:
         return response_error("JSON 형식이 올바르지 않습니다", code=400)

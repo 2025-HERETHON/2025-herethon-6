@@ -1,7 +1,9 @@
 from django.urls import path
-from .views import comment_root, comment_detail_root
+from .views import comment_create, comment_list, comment_update, comment_delete
 
 urlpatterns = [
-    path('', comment_root, name='comment_root'),                            # GET, POST
-    path('<int:comment_id>/', comment_detail_root, name='comment_detail'),  # POST(PUT 기능), DELETE
+    path('create/', comment_create, name='comment_create'),  # POST
+    path('list/', comment_list, name='comment_list'),        # GET
+    path('<int:comment_id>/update/', comment_update, name='comment_update'),  # POST(PUT 기능)
+    path('<int:comment_id>/delete/', comment_delete, name='comment_delete'),  # DELETE
 ]
