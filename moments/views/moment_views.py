@@ -58,7 +58,6 @@ def moment_detail_view(request, moment_id):
     images = Image.objects.filter(moment_id=moment_id)       
     comments = Comment.objects.filter(moment_id=moment)    
     comment_count = comments.count()
-
     like_count = Like.objects.filter(moment=moment).count()
 
     return render(request, 'moment_detail.html', {
