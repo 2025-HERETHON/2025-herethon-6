@@ -1,7 +1,9 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import now
 from ..models import Moment, If, Category, Image
+from comments.models import Comment
 from oopsie.utils import response_success, response_error
 from ..image_utils import upload_to_s3, delete_from_s3
 from urllib.parse import urlparse
@@ -9,6 +11,45 @@ from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
+def moment_create_view(request):
+    return render(request, 'moments/moment_create.html')
+
+
+def moment_list_view(request):
+    category_id = request.GET.get("category_id")
+
+    if category_id:
+        try:
+            category = Category.objects.get(category_id=int(category_id))
+            moments = Moment.objects.filter(category_id=category)
+        except (ValueError, Category.DoesNotExist):
+            moments = Moment.objects.none()
+    else:
+        moments = Moment.objects.all()
+
+    return render(request, 'moments/moment_list.html', {
+        'moments': moments,
+        'category_id': category_id  # 선택된 카테고리 표시용
+    })
+
+def moment_detail_view(request, moment_id):
+    moment = get_object_or_404(Moment, id=moment_id)
+    images = Image.objects.filter(moment=moment)       
+    comments = Comment.objects.filter(moment=moment)    
+    comment_count = comments.count()
+
+    return render(request, 'moments/moment_detail.html', {
+        'moment': moment,
+        'images': images,
+        'comments': comments,
+        'comment_count': comment_count, # 댓글수도 넘겨줌
+    })
+
+def moment_update_view(request, moment_id):
+    moment = get_object_or_404(Moment, id=moment_id)
+    return render(request, 'moments/moment_update.html', {'moment': moment})
+
+'''
 # 글 생성 or 목록조회 분기
 @csrf_exempt
 def moment_root(request): 
@@ -28,6 +69,7 @@ def moment_detail_root(request, moment_id):
         return moment_delete(request, moment_id)
     else:
         return response_error("허용되지 않은 메서드입니다", code=405)
+'''
 
 
 ###############################################################
@@ -98,6 +140,7 @@ def moment_create(request):
             "moment_id": moment.moment_id,
         }
         return response_success(data, message="글 작성 완료")
+        
 
     except Exception as e:
         return response_error(f"서버 오류: {str(e)}", code=500)

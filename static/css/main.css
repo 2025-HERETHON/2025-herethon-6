@@ -155,3 +155,16 @@ line-height: normal;
 .scroll::-webkit-scrollbar {
     display: none; /* Chrome, Safari */
   }
+
+  #nb {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 402px; /* 앱 디자인 폭 제한 */
+    gap: 80px;
+    align-items: center;
+    justify-content: space-around;
+    border-radius: 0 0 30px 30px;
+    z-index: 1000; /* 다른 요소 위에 있도록 */
+}
+
