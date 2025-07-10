@@ -41,9 +41,7 @@
                 <div class="entire">
                     {% for moment in top3_overall %}
                         <div class="moment-item">
-                            <h4>{{ moment.title }}</h4>
-                            <p>좋아요 {{ moment.like_count }}개</p>
-                            <a href="{% url 'moments:moment_detail_view' moment.moment_id %}">자세히 보기</a>
+                            <a href="{% url 'moments:moment_detail_view' moment.moment_id %}">{{ moment.title }}</a>
                         </div>
                     {% empty %}
                         <p>인기글이 없습니다.</p>
@@ -60,7 +58,9 @@
                     <ul>
                         {% for moment in moments %}
                             <li>
-                                <strong>{{ moment.title }}</strong> - 좋아요 {{ moment.like_count }}개
+                                <a href="{% url 'moments:moment_detail_view' moment.moment_id %}">
+                                    <strong>{{ moment.title }}</strong></a>
+                                <span>{{ moment.content|truncatechars:50 }}</span>  <!-- 본문 50자만 표시 -->
                             </li>
                         {% empty %}
                             <li>게시물이 없습니다.</li>
