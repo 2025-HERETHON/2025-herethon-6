@@ -54,14 +54,14 @@ def moment_list_view(request, category_id):
     })
 
 def moment_detail_view(request, moment_id):
-    moment = get_object_or_404(Moment, id=moment_id)
-    images = Image.objects.filter(moment=moment)       
-    comments = Comment.objects.filter(moment=moment)    
+    moment = get_object_or_404(Moment, moment_id=moment_id)
+    images = Image.objects.filter(moment_id=moment_id)       
+    comments = Comment.objects.filter(moment_id=moment)    
     comment_count = comments.count()
 
     like_count = Like.objects.filter(moment=moment).count()
 
-    return render(request, 'moments/moment_detail.html', {
+    return render(request, 'moment_detail.html', {
         'moment': moment,
         'images': images,
         'comments': comments,
