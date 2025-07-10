@@ -49,6 +49,7 @@ def moment_update_view(request, moment_id):
     moment = get_object_or_404(Moment, id=moment_id)
     return render(request, 'moments/moment_update.html', {'moment': moment})
 
+'''
 # 글 생성 or 목록조회 분기
 @csrf_exempt
 def moment_root(request): 
@@ -68,6 +69,7 @@ def moment_detail_root(request, moment_id):
         return moment_delete(request, moment_id)
     else:
         return response_error("허용되지 않은 메서드입니다", code=405)
+'''
 
 
 ###############################################################
