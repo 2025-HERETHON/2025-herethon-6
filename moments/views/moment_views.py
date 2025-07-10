@@ -15,21 +15,13 @@ def moment_create_view(request):
     return render(request, 'moments/moment_create.html')
 
 
-def moment_list_view(request):
-    category_id = request.GET.get("category_id")
-
-    if category_id:
-        try:
-            category = Category.objects.get(category_id=int(category_id))
-            moments = Moment.objects.filter(category_id=category)
-        except (ValueError, Category.DoesNotExist):
-            moments = Moment.objects.none()
-    else:
-        moments = Moment.objects.all()
-
-    return render(request, 'moments/moment_list.html', {
+def moment_list_view(request, category_id):
+    # category_id를 직접 받아서 필터링
+    moments = Moment.objects.filter(category_id=category_id)
+    
+    return render(request, 'moment_list.html', {
         'moments': moments,
-        'category_id': category_id  # 선택된 카테고리 표시용
+        'selected_category': category_id  # 필요하면 이름으로 바꿔줄 수도 있음
     })
 
 def moment_detail_view(request, moment_id):

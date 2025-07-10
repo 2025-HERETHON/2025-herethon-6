@@ -13,17 +13,19 @@
     <div class="container">
         <div class="text">
             <h1>당신의 <span class="blue">경험</span>을 공유해주세요</h1></div>
-        <div class="input">
-            <div class="input1">
-            <input type="text" placeholder="이메일"></div>
-            <div class="input2">
-            <input type="text" placeholder="비밀번호"></div>
-            <div class="button">
-                <a href="{% url 'users:login' %}">
-                    <button type="submit">로그인</button></div>
-                </a>
-            <a href="{% url 'users:signup' %}" class="login_link">회원가입하기</a>          
-        </div>
+        <form method="POST" action="{% url 'users:login' %}">
+            <div class="input">
+                <div class="input1">
+                <input type="text" name="email" placeholder="이메일"></div>
+                <div class="input2">
+                <input type="text" name="password" placeholder="비밀번호"></div>
+                <div class="button">
+                    <a href="{% url 'main' %}">
+                        <button type="submit">로그인</button></div>
+                    </a>
+                <a href="{% url 'users:signup' %}" class="login_link">회원가입하기</a>          
+            </div>
+        </form>
             
     </div>
     
