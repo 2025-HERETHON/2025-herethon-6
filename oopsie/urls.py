@@ -22,5 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('moments/', include('moments.urls')),
-
+    path('pages/moments/', include('moments.pages_urls')) # 페이지 렌더는 pages/로 시작!
 ]
