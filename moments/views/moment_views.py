@@ -52,7 +52,7 @@ def moment_list_view(request, category_id):
     
     top_keywords = get_weekly_keywords_data(category_id)
     
-    ifs = If.objects.filter(moment_id__category_id=category_id).order_by('-created_date')
+    ifs = If.objects.filter(moment_id__category_id=category_id).order_by('-created_date')[:7]
     return render(request, 'moment_list.html', {
         'moments': moments,
         'ifs': ifs,  
