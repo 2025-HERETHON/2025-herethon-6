@@ -3,30 +3,32 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/common/container.css' %}">
-    <link rel="stylesheet" href="{% static 'css/login2.css' %}">
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="{% static 'css/common/container.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/login2.css' %}" />
+    <title>로그인</title>
 </head>
 <body>
     <div class="container">
         <div class="text">
-            <h1>당신의 <span class="blue">경험</span>을 공유해주세요</h1></div>
-        <div class="input">
-            <div class="input1">
-            <input type="text" placeholder="이메일"></div>
-            <div class="input2">
-            <input type="text" placeholder="비밀번호"></div>
-            <div class="button">
-                <a href="{% url 'users:login' %}">
-                    <button type="submit">로그인</button></div>
-                </a>
-            <a href="{% url 'users:signup' %}" class="login_link">회원가입하기</a>          
+            <h1>당신의 <span class="blue">경험</span>을 공유해주세요</h1>
         </div>
-            
+        <form method="post" action="{% url 'users:login' %}">
+            {% csrf_token %}
+            <div class="input">
+                <div class="input1">
+                    <input type="text" name="email" placeholder="이메일" required />
+                </div>
+                <div class="input2">
+                    <input type="password" name="password" placeholder="비밀번호" required />
+                </div>
+                <div class="button">
+                    <button type="submit">로그인</button>
+                </div>
+            </div>
+        </form>
+        <a href="{% url 'users:signup' %}" class="login_link">회원가입하기</a>
     </div>
-    
 </body>
 </html>
-
