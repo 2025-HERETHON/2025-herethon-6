@@ -27,18 +27,19 @@
         <div class="category-box hidden" id="categoryBox">
           <img src="../img/Group 86.png" alt="카테고리 배경" class="category-bg">
           <ul class="category-menu" id="categoryMenu">
-            <li>연애</li>
-            <li>인간관계</li>
-            <li>취업/커리어</li>
-            <li>건강</li>
-            <li>학업</li>
-            <li>취미</li>
-            <li>소비</li>
-            <li>기타</li>
+            <li data-id="1">연애</li>
+            <li data-id="2">인간관계</li>
+            <li data-id="3">취업/커리어</li>
+            <li data-id="4">건강</li>
+            <li data-id="5">학업</li>
+            <li data-id="6">취미</li>
+            <li data-id="7">소비</li>
+            <li data-id="8">기타</li>
           </ul>
         </div>
       </div>
     </div>
+    <!--
     <div class="image">
       <img src="../img/add_photo_alternate.png" alt="사진 추가" id="imageBtn">
       <div class="image-box hidden" id="imageBox">
@@ -54,81 +55,93 @@
         </ul>
       </div>
     </div>
-
+  -->
     <form method="POST" action="http://127.0.0.1:8000/moments/create/" enctype="multipart/form-data">
       <div class="input1">
         <p>제목</p>
-        <input type="text" id="title" readonly>
+        <input type="text" id="title" name="title">
       </div>
+      <input type="hidden" name="category_id" id="categoryIdInput">
       <div class="input2">
         <p>실패담</p>
-        <textarea id="failure" readonly></textarea>
+        <textarea id="failure"  name="content"></textarea>
       </div>
       <div class="input3">
         <p>내가 만약 다시 돌아간다면?</p>
-        <textarea id="regret" readonly></textarea>
+        <textarea id="regret" name="if_content"></textarea>
+      </div>
+      <div class="input4">
+        <p>이미지 첨부</p>
+        <input type="file" name="images" accept="image/*" multiple>
       </div>
       <div class="button">
-        <a>
-          <button onclick="handleSubmit()">작성하기</button>
-        </a>
+        <button type="submit">작성하기</button>
       </div>
     </form>
   </div>
 
-  <script>
-    // 입력창 활성화
-    function handleSubmit() {
-      document.getElementById("title").removeAttribute("readonly");
-      document.getElementById("failure").removeAttribute("readonly");
-      document.getElementById("regret").removeAttribute("readonly");
+<script>
+  // 1. 카테고리 관련 요소 선택
+  const icon = document.getElementById("categoryIcon");
+  const box = document.getElementById("categoryBox");
+  const menu = document.getElementById("categoryMenu");
+  const selectedText = document.getElementById("selectedCategory");
+  const categoryIdInput = document.getElementById("categoryIdInput"); // 💡 hidden input
+
+  // 2. 카테고리 아이콘 클릭 시 메뉴 토글
+  icon.addEventListener("click", () => {
+    box.classList.toggle("hidden");
+  });
+
+  // 3. 카테고리 메뉴 클릭 시 텍스트 및 ID 설정
+  menu.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+      const selectedName = e.target.textContent;
+      const selectedId = e.target.getAttribute("data-id");
+
+      selectedText.textContent = selectedName;
+      selectedText.classList.remove("hidden");
+      box.classList.add("hidden");
+
+      // hidden input에 ID 저장
+      categoryIdInput.value = selectedId;
     }
+  });
 
-    // 카테고리 메뉴
-    const icon = document.getElementById("categoryIcon");
-    const box = document.getElementById("categoryBox");
-    const menu = document.getElementById("categoryMenu");
-    const selectedText = document.getElementById("selectedCategory");
+  // 4. 이미지 메뉴 관련 요소
+  const imageBtn = document.getElementById("imageBtn");
+  const imageBox = document.getElementById("imageBox");
 
-    icon.addEventListener("click", () => {
-      box.classList.toggle("hidden");
-    });
+  imageBtn.addEventListener("click", () => {
+    imageBox.classList.toggle("hidden");
+    dropdownMenu.classList.add("hidden");
+  });
 
-    menu.addEventListener("click", (e) => {
-      if (e.target.tagName === "LI") {
-        selectedText.textContent = e.target.textContent;
-        selectedText.classList.remove("hidden");
-        icon.classList.add("hidden");
-        box.classList.add("hidden");
-      }
-    });
+  // 5. 드롭다운 토글
+  const dropdownBtn = document.getElementById("dropdownBtn");
+  const dropdownMenu = document.getElementById("dropdownMenu");
 
-    // 이미지 메뉴 열기
-    const imageBtn = document.getElementById("imageBtn");
-    const imageBox = document.getElementById("imageBox");
+  dropdownBtn.addEventListener("click", () => {
+    dropdownMenu.classList.toggle("hidden");
+  });
 
-    imageBtn.addEventListener("click", () => {
-      imageBox.classList.toggle("hidden");
-      dropdownMenu.classList.add("hidden"); 
-    });
+  // 6. 드롭다운 선택 시 텍스트 변경
+  dropdownMenu.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+      dropdownBtn.textContent = e.target.textContent + " ▼";
+      dropdownMenu.classList.add("hidden");
+    }
+  });
 
-    // 드롭다운 토글
-    const dropdownBtn = document.getElementById("dropdownBtn");
-    const dropdownMenu = document.getElementById("dropdownMenu");
+    const form = document.querySelector("form");
+  form.addEventListener("submit", function (e) {
+    if (!categoryIdInput.value) {
+      alert("카테고리를 선택해주세요.");
+      e.preventDefault();  // 제출 막기
+    }
+  });
+</script>
 
-    dropdownBtn.addEventListener("click", () => {
-      dropdownMenu.classList.toggle("hidden");
-    });
-
-    // 드롭다운 선택 시 텍스트 변경
-    dropdownMenu.addEventListener("click", (e) => {
-      if (e.target.tagName === "LI") {
-        dropdownBtn.textContent = e.target.textContent + " ▼";
-        dropdownMenu.classList.add("hidden");
-      }
-    });
-  </script>
 </body>
 </html>
-
 
