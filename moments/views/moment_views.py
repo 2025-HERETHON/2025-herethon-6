@@ -1,6 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils.timezone import now
 from ..models import Moment, If, Category, Image, Moment, Category, Like
 from comments.models import Comment
@@ -9,6 +9,7 @@ from ..image_utils import upload_to_s3, delete_from_s3
 from urllib.parse import urlparse
 from django.contrib.auth import get_user_model
 from django.db.models import Count
+from ..utils.keyword_utils import get_weekly_keywords_data
 
 User = get_user_model()
 
@@ -34,7 +35,7 @@ def main(request):
     'top3_by_category': top3_by_category,})
 
 def moment_create_view(request):
-    return render(request, 'moments/moment_create.html')
+    return render(request, 'moment_create.html')
 
 
 def moment_list_view(request, category_id):
@@ -47,10 +48,13 @@ def moment_list_view(request, category_id):
     else:  
         moments = moments.order_by('-created_date')
     
+    top_keywords = get_weekly_keywords_data(category_id)
+    
     return render(request, 'moment_list.html', {
         'moments': moments,
         'selected_category': category_id,  # 필요하면 이름으로 바꿔줄 수도 있음
         'sort': sort,
+        'top_keywords': top_keywords,
     })
 
 def moment_detail_view(request, moment_id):
@@ -69,8 +73,8 @@ def moment_detail_view(request, moment_id):
     })
 
 def moment_update_view(request, moment_id):
-    moment = get_object_or_404(Moment, id=moment_id)
-    return render(request, 'moments/moment_update.html', {'moment': moment})
+    moment = get_object_or_404(Moment, moment_id=moment_id)
+    return render(request, 'moment_update.html', {'moment': moment})
 
 '''
 # 글 생성 or 목록조회 분기
@@ -112,11 +116,11 @@ def moment_create(request):
     content = request.POST.get('content')
     if_content = request.POST.get('if_content')
     category_id = request.POST.get('category_id')
-    visibility = request.POST.get('visibility', 'public') 
+    
 
 
     # 필수 항목 검사
-    if not all([title, content, if_content, category_id, visibility]):
+    if not all([title, content, if_content, category_id]):
         return response_error("필수 항목이 누락되었습니다", code=400)
 
     # 카테고리 존재 확인
@@ -133,7 +137,6 @@ def moment_create(request):
             content=content,
             user_id=request.user,
             category_id=category,
-            visibility=visibility,
             created_date=now(),
             modified_date=now()
         )
@@ -162,7 +165,7 @@ def moment_create(request):
         data = { 
             "moment_id": moment.moment_id,
         }
-        return response_success(data, message="글 작성 완료")
+        return redirect(f"/pages/moments/{moment.moment_id}/detail")
         
 
     except Exception as e:
@@ -206,10 +209,7 @@ def moment_detail(request, moment_id):
         # Moment 조회 (+ user, category join)
         moment = Moment.objects.select_related('user_id', 'category_id').get(moment_id=moment_id)
 
-        # 비공개 글인 경우
-        if moment.visibility == "private" and request.user != moment.user_id:
-            return response_error("비공개 글입니다", code=403)
-
+    
         # 연결된 If 가져오기
         if_content = moment.if_moment.if_content  
 
@@ -227,7 +227,6 @@ def moment_detail(request, moment_id):
             "title": moment.title,
             "content": moment.content,
             "if_content": if_content,
-            "visibility": moment.visibility,
             "category": moment.category_id.name,
             "created_date": moment.created_date,
             "modified_date": moment.modified_date,
@@ -267,7 +266,6 @@ def moment_update(request, moment_id):
         content = request.POST.get('content')
         if_content = request.POST.get('if_content')
         category_id = request.POST.get('category_id')
-        visibility = request.POST.get('visibility', 'public')
         images = request.FILES.getlist('images')
         
         '''
@@ -281,7 +279,7 @@ def moment_update(request, moment_id):
 '''
 
         # 필수값 확인
-        if not all([title, content, if_content, category_id, visibility]):
+        if not all([title, content, if_content, category_id]):
             return response_error("필수 항목이 누락되었습니다", code=400)
 
         # 카테고리 유효성 확인
@@ -294,7 +292,6 @@ def moment_update(request, moment_id):
         moment.title = title
         moment.content = content
         moment.category_id = category
-        moment.visibility = visibility
         moment.modified_date = now()
         moment.save()
 
