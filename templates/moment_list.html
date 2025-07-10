@@ -1,0 +1,94 @@
+{% load static %}
+<html>
+<head>
+  <title>category</title>
+  <link rel="stylesheet" href="{% static 'css/common/container.css' %}">
+  <link rel="stylesheet" href="{% static 'css/category.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="scroll">
+
+            <div class="header">
+                <div class="top">
+                    <img src="../images/logo.svg" alt="logo">
+                    <div class="tab">
+                        <img class=btn src="../images/search.svg" alt="search">
+                        <img class=btn src="../images/menu.svg" alt="menu">
+                    </div>
+                </div>
+                    <div class="categories">
+                        <a href="{% url 'moments:moment_list_view' 1 %}"><button>연애</button></a>
+                        <a href="{% url 'moments:moment_list_view' 2 %}"><button>인간관계</button></a>
+                        <a href="{% url 'moments:moment_list_view' 3 %}"><button>취업/커리어</button></a>
+                        <a href="{% url 'moments:moment_list_view' 4 %}"><button>건강</button></a>
+                        <a href="{% url 'moments:moment_list_view' 5 %}"><button>학업</button></a>
+                        <a href="{% url 'moments:moment_list_view' 6 %}"><button>취미</button></a>
+                        <a href="{% url 'moments:moment_list_view' 7 %}"><button>소비</button></a>
+                        <a href="{% url 'moments:moment_list_view' 8 %}"><button>기타</button></a>
+                    </div>           
+            </div>
+
+            <div class="top3">
+                <p class="top3-name">TOP3<span id="keyword">키워드</span></p>
+                <div class="list">
+                    <div class="box"></div>
+                    <div class="box"></div>
+                    <div class="box"></div>
+                </div>
+            </div>
+
+            <div class="if-content">
+                <!--category_name 데이터 삽입-->
+                사람들이 말하는 {{ selected_category }} 분야에서
+                <span class="highlight">내가 다시 돌아간다면?</span>
+
+                <!--if 글 목록-->
+                <div class="content-box">
+                    <!--if 데이터 삽입-->
+                    {% for if in ifs %}
+                    <div class="if-item">
+                        <div class="profile">
+                            <!--이미지 데이터 수정하기-->
+                            <img src="{{ if.user_img_url }}" alt="profile">
+                        </div>
+                        <div class="if-item-box">{{ if.content }}</div>
+                    </div>
+                    <hr class="if"/>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <!--전체 글 목록-->
+            <div class="moments">
+                <div class="order">
+                    <a href="?type={{ category.name }}&sort=popular">
+                        <button class="sortBtn">인기순</button>
+                    </a>
+                    <a href="?type={{ category.name }}&sort=latest">
+                        <button class="sortBtn">최신순</button>
+                    </a>
+                </div>
+                <hr />
+                <!--img, title 데이터 삽입-->
+                {% for moment in moments %}
+                <div class="moment">
+                    <div class="profile">
+                        <!--이미지데이터 수정하기-->
+                        <img src="{{ moment.user_img_url}}">
+                    </div>
+                    <div class="m-content">{{ moment.title }}</div>
+                </div>
+                <hr />
+                {% endfor %}
+            </div>
+        </div>
+        <div id="nb">
+            {% include "components/navbar.html" %}
+        </div>
+    </div>
+
+  <script src="../js/category.js"></script>
+</body>
+</html>

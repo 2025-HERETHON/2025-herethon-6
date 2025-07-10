@@ -20,4 +20,4 @@ def login_view(request):
             return render(request, 'login.html', {"error": "이메일 또는 비밀번호가 일치하지 않습니다."})
 
         login(request, user)
-        return redirect('main')
+        return redirect('/main/')

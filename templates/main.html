@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" name="width=device-width, initial-scale=1.0">
+    <title>Main</title>
+    <link rel="stylesheet" href="{% static 'css/common/container.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+    <div method="GET" class="container">
+        <div class="scroll">
+            <div class="header">
+                <div class="top">
+                    <img src="../images/logo.svg" alt="logo">
+                    <div class="tab">
+                        <img id=btn src="../images/search.svg" alt="search">
+                        <img id=btn src="../images/menu.svg" alt="menu">
+                    </div>
+                </div>
+                <div class="categories">
+                    <a href="" value="연애"><button onclick="showTopPosts()">연애</button></a>
+                    <a href="category.html?type=인간관계"><button>인간관계</button></a>
+                    <a href="category.html?type=취업/커리어"><button>취업/커리어</button></a>
+                    <a href="category.html?type=건강"><button>건강</button></a>
+                    <a href="category.html?type=학업"><button>학업</button></a>
+                    <a href="category.html?type=취미"><button>취미</button></a>
+                    <a href="category.html?type=소비"><button>소비</button></a>
+                    <a href="category.html?type=기타"><button>기타</button></a>
+                </div>              
+            </div>
+            <div class="box" id="popular">
+                <div class="name">
+                    <img src="../images/fire.svg" />
+                    전체 인기글
+                </div>
+                <div class="entire" ></div>
+            </div>
+            <div class="name">
+                각 분야의 <span>TOP3</span> 경험글
+            </div>
+            <div class="post"></div>
+        </div>
+        <div id="navbar"></div>
+    </div>
+
+    
+    <script>
+
+    </script>
+    <script src="../js/main.js"></script>
+</body>
+</html>
