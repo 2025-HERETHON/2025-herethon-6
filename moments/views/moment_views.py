@@ -2,7 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import now
-from ..models import Moment, If, Category, Image, Moment, Category
+from ..models import Moment, If, Category, Image, Moment, Category, Like
 from comments.models import Comment
 from oopsie.utils import response_success, response_error
 from ..image_utils import upload_to_s3, delete_from_s3
@@ -55,11 +55,14 @@ def moment_detail_view(request, moment_id):
     comments = Comment.objects.filter(moment=moment)    
     comment_count = comments.count()
 
+    like_count = Like.objects.filter(moment=moment).count()
+
     return render(request, 'moments/moment_detail.html', {
         'moment': moment,
         'images': images,
         'comments': comments,
         'comment_count': comment_count, # 댓글수도 넘겨줌
+        'like_count': like_count
     })
 
 def moment_update_view(request, moment_id):
