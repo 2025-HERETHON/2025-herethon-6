@@ -1,4 +1,5 @@
 {% load static %}
+{% load messages %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +12,20 @@
 </head>
 <body>
     <div class="container">
+
+        <!-- 🔔 메시지 출력 영역 -->
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         <div class="text">
             <h1>당신의 <span class="blue">경험</span>을 공유해주세요</h1>
         </div>
+
         <form method="post" action="{% url 'users:login' %}">
             {% csrf_token %}
             <div class="input">
@@ -28,6 +40,7 @@
                 </div>
             </div>
         </form>
+
         <a href="{% url 'users:signup' %}" class="login_link">회원가입하기</a>
     </div>
 </body>
