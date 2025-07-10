@@ -23,6 +23,6 @@ urlpatterns = [
     path('users/', include('users.urls')),
     path('moments/', include('moments.urls')),
     path('main/', views.main_view, name='main'), 
-    path('pages/moments/', include('moments.pages_urls')) # 페이지 렌더는 pages/로 시작!
+    path('pages/moments/', include('moments.pages_urls')), # 페이지 렌더는 pages/로 시작!
     path('main/', views.main_view, name='main'), 
 ]
