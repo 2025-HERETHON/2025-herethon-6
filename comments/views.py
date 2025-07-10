@@ -65,12 +65,12 @@ def comment_list(request, moment_id):
 @csrf_exempt
 def comment_create(request, moment_id):
     # 임시 로그인 우회 (테스트 전용)
-    from users.models import CustomUser
-    request.user = CustomUser.objects.first()  # 가장 첫 번째 유저
+    #from users.models import CustomUser
+    #request.user = CustomUser.objects.first()  # 가장 첫 번째 유저
 
-    #user = request.user
-    #if not user.is_authenticated:
-   #     return response_error("로그인이 필요합니다", code=401)
+    user = request.user
+    if not user.is_authenticated:
+        return response_error("로그인이 필요합니다", code=401)
     try:
         # 게시글 유효성 검사
         try:
@@ -120,10 +120,10 @@ def comment_create(request, moment_id):
 @csrf_exempt
 def comment_update(request, moment_id, comment_id):
     user = request.user
-  #  if not user.is_authenticated:
-   #     return response_error("로그인이 필요합니다", code=401)
- #   if comment.user_id != request.user:
-   #     return response_error("댓글 수정 권한이 없습니다", code=403)
+    if not user.is_authenticated:
+        return response_error("로그인이 필요합니다", code=401)
+    if comment.user_id != request.user:
+        return response_error("댓글 수정 권한이 없습니다", code=403)
     
     try:
         # JSON 파싱
@@ -175,12 +175,12 @@ def comment_update(request, moment_id, comment_id):
 @csrf_exempt
 def comment_delete(request, moment_id, comment_id):
     user = request.user
- #   if not user.is_authenticated:
- #       return response_error("로그인이 필요합니다", code=401)
+    if not user.is_authenticated:
+        return response_error("로그인이 필요합니다", code=401)
     if request.method != 'DELETE':
         return response_error("DELETE 요청만 허용됩니다", code=405)
-  #  if comment.user_id != request.user:
-  #      return response_error("댓글 삭제 권한이 없습니다", code=403)
+    if comment.user_id != request.user:
+        return response_error("댓글 삭제 권한이 없습니다", code=403)
 
     try:
         # JSON 파싱
