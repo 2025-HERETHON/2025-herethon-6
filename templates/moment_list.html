@@ -32,15 +32,22 @@
             <div class="top3">
                 <p class="top3-name">TOP3&nbsp;<span id="keyword">키워드</span></p>
                 <div class="list">
-                    <div class="box"></div>
-                    <div class="box"></div>
-                    <div class="box"></div>
+                    {% if top_keywords %}
+                        {% for keyword in top_keywords %}
+                            <div class="box">{{ keyword }}</div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="box">아직이에요</div>
+                        <div class="box">글작성을</div>
+                        <div class="box">해보세요!</div>
+                    {% endif %}
                 </div>
             </div>
 
+
             <div class="if-content">
                 <!--category_name 데이터 삽입-->
-                사람들이 말하는 {{ selected_category }} 분야에서
+                사람들이 말하는 {{ selected_category.name }} 분야에서
                 <span class="highlight">내가 다시 돌아간다면?</span>
 
                 <!--if 글 목록-->
@@ -71,6 +78,7 @@
                     </a>
                 </div>
                 <hr />
+
                 <!--img, title 데이터 삽입-->
                 {% for moment in moments %}
                 <div class="moment">
