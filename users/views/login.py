@@ -2,10 +2,6 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth import authenticate, login
 
-def main_view(request):
-    return render(request, "main.html")
-
-
 @csrf_exempt
 def login_view(request):
     if request.method == 'GET':
@@ -18,7 +14,7 @@ def login_view(request):
         if not (email and password):
             return render(request, 'login.html', {"error": "이메일과 비밀번호를 입력해 주세요."})
 
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=email, password=password)
 
         if user is None:
             return render(request, 'login.html', {"error": "이메일 또는 비밀번호가 일치하지 않습니다."})

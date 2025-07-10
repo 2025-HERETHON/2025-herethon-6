@@ -14,7 +14,7 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, nickname=nickname)
         user.set_password(password)
-        user.save(using=self.db)
+        user.save(using=self._db)
         return user
     
     # 슈퍼유저 (필요시 사용)
@@ -22,7 +22,7 @@ class CustomUserManager(BaseUserManager):
         user = self.create_user(email, nickname, password)
         user.is_staff = True
         user.is_superuser = True
-        user.save(using=self.db)
+        user.save(using=self._db)
         return user
     
 class CustomUser(AbstractBaseUser, PermissionsMixin):

@@ -29,6 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+STATICFILES_DIRS = [
+    BASE_DIR / "static",  # ✅ 여기에 정적 파일들이 모여있다고 알려주는 설정
+]
 
 # Application definition
 
