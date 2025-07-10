@@ -26,3 +26,4 @@ urlpatterns = [
     path('pages/moments/', include('moments.pages_urls')), # 페이지 렌더는 pages/로 시작!
     path('main/', main, name='main'), 
 ]
+
