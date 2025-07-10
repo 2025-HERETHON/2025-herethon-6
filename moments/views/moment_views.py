@@ -9,7 +9,7 @@ from ..image_utils import upload_to_s3, delete_from_s3
 from urllib.parse import urlparse
 from django.contrib.auth import get_user_model
 from django.db.models import Count
-from ..utils.keyword_utils import get_weekly_keywords_data
+from ..utils.keyword_utils import get_weekly_keywords_data, save_weekly_keywords
 
 User = get_user_model()
 
@@ -40,6 +40,8 @@ def moment_create_view(request):
 
 def moment_list_view(request, category_id):
     # category_id를 직접 받아서 필터링
+    save_weekly_keywords()
+    category = Category.objects.get(pk=category_id)
     moments = Moment.objects.filter(category_id=category_id)
     
     sort = request.GET.get('sort', 'latest')
@@ -50,9 +52,11 @@ def moment_list_view(request, category_id):
     
     top_keywords = get_weekly_keywords_data(category_id)
     
+    ifs = If.objects.filter(moment_id__category_id=category_id).order_by('-created_date')
     return render(request, 'moment_list.html', {
         'moments': moments,
-        'selected_category': category_id,  # 필요하면 이름으로 바꿔줄 수도 있음
+        'ifs': ifs,  
+        'selected_category': category,
         'sort': sort,
         'top_keywords': top_keywords,
     })
