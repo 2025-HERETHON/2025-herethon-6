@@ -3,7 +3,7 @@
 <head>
   <title>category</title>
   <link rel="stylesheet" href="{% static 'css/common/container.css' %}">
-  <link rel="stylesheet" href="{% static 'css/category.css' %}">
+  <link rel="stylesheet" href="{% static 'css/moment_list.css' %}">
 </head>
 <body>
     <div class="container">
@@ -11,26 +11,26 @@
 
             <div class="header">
                 <div class="top">
-                    <img src="../images/logo.svg" alt="logo">
+                    <img src="{% static 'assets/logo.svg' %}" alt="logo">
                     <div class="tab">
-                        <img class=btn src="../images/search.svg" alt="search">
-                        <img class=btn src="../images/menu.svg" alt="menu">
+                        <img class=btn src="{% static 'assets/search.svg' %}" alt="search">
+                        <img class=btn src="{% static 'assets/menu.svg' %}" alt="menu">
                     </div>
                 </div>
                     <div class="categories">
-                        <a href="{% url 'moments:moment_list_view' 1 %}"><button>연애</button></a>
-                        <a href="{% url 'moments:moment_list_view' 2 %}"><button>인간관계</button></a>
-                        <a href="{% url 'moments:moment_list_view' 3 %}"><button>취업/커리어</button></a>
-                        <a href="{% url 'moments:moment_list_view' 4 %}"><button>건강</button></a>
-                        <a href="{% url 'moments:moment_list_view' 5 %}"><button>학업</button></a>
-                        <a href="{% url 'moments:moment_list_view' 6 %}"><button>취미</button></a>
-                        <a href="{% url 'moments:moment_list_view' 7 %}"><button>소비</button></a>
-                        <a href="{% url 'moments:moment_list_view' 8 %}"><button>기타</button></a>
+                        <a href="{% url 'moments:moment_list_view' 1 %}"><button data-category="1">연애</button></a>
+                        <a href="{% url 'moments:moment_list_view' 2 %}"><button data-category="2">인간관계</button></a>
+                        <a href="{% url 'moments:moment_list_view' 3 %}"><button data-category="3">취업/커리어</button></a>
+                        <a href="{% url 'moments:moment_list_view' 4 %}"><button data-category="4">건강</button></a>
+                        <a href="{% url 'moments:moment_list_view' 5 %}"><button data-category="5">학업</button></a>
+                        <a href="{% url 'moments:moment_list_view' 6 %}"><button data-category="6">취미</button></a>
+                        <a href="{% url 'moments:moment_list_view' 7 %}"><button data-category="7">소비</button></a>
+                        <a href="{% url 'moments:moment_list_view' 8 %}"><button data-category="8">기타</button></a>
                     </div>           
-            </div>
+            </div>      
 
             <div class="top3">
-                <p class="top3-name">TOP3<span id="keyword">키워드</span></p>
+                <p class="top3-name">TOP3&nbsp;<span id="keyword">키워드</span></p>
                 <div class="list">
                     <div class="box"></div>
                     <div class="box"></div>
@@ -91,6 +91,6 @@
     <script>
         const category = "{{ selected_category }}"
     </script>
-    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/category.js' %}"></script>
 </body>
 </html>

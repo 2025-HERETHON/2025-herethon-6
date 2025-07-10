@@ -41,10 +41,47 @@
                 <div class="entire"></div>
             </div>
 
-            <div class="name">
-                각 분야의 <span>TOP3</span> 경험글
+            <div class="top3-ex">
+                각 분야의&nbsp;<span>TOP3</span>&nbsp;경험글
             </div>
-            <div class="post"></div>
+            <div class="post">
+    <!-- 연애 -->
+    <p class="categoryName">연애</p>
+    <div class="post-list">
+        <div class="post-item">
+            <div class="title">
+                1. "남자친구랑 싸웠어요"
+            </div>
+            <div class="content-summary">
+                엥..
+            </div>
+        </div>
+        <div class="post-item">
+            <div class="title">
+                2. "차이고도 고백한 나, 레전드.mp4" 
+            </div>
+            <div class="content-summary">
+                좋아하던 사람이 있었는데, 이미 내가 좀 부담스럽다는 말도 은근히 했던 사람… 
+            </div>
+        </div>
+        <div class="post-item">
+            <div class="title">
+                3. "고백 안 했는데 차였어요" 
+            </div>
+            <div class="content-summary">
+                그냥 잘 지내던 친구였는데, 어느 날 갑자기 “우리 그런 사이 아니잖아?”라는 말을 들었어요. 어이없고 당황스러워서 “응, 나 그런 말 한 적 없어…”라고 했는데, 이미 주변 사람들한테 다 퍼진 상태더라고요. 
+            </div>
+        </div>
+    </div>
+
+    <!-- 취업 -->
+    <p class="categoryName">취업</p>
+    <div class="post-list">
+        <div class="post-item">취업 성공했어요!</div>
+        <div class="post-item">면접 후기 공유합니다</div>
+        <div class="post-item">이력서 작성 꿀팁</div>
+    </div>
+</div>
         </div>
 
         <!-- ✅ 내비바는 스크롤 영역 밖에 -->
@@ -53,7 +90,7 @@
         </div>
     </div>
     <script>
-        const category = "{{ selected_category }}"
+        const category = parseInt("{{ selected_category }}");
     </script>
     <script src="{% static 'js/main.js' %}"></script>
 </body>
