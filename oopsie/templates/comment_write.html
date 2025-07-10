@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document</title>
+  <link rel="stylesheet" href="../container.css" />
+  <link rel="stylesheet" href="../css/comment_write.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="back">
+        <a href="#"><img src="../img/arrow_back.png" alt="뒤로가기" /></a>
+      </div>
+      <div class="profile">
+        <div class="img">
+          <img src="../img/Group 59.png" alt="프로필 이미지" />
+        </div>
+        <div class="name">
+          <p>바그바그</p>
+        </div>
+      </div>
+      <div class="category">
+        <img src="../img/Group 85.png" id="categoryIcon" alt="카테고리 아이콘" />
+        <div id="selectedCategory" class="hidden"></div>
+        <div class="category-box hidden" id="categoryBox">
+          <img src="../img/Group 86.png" alt="카테고리 배경" class="category-bg" />
+          <ul class="category-menu" id="categoryMenu">
+            <li>연애</li>
+            <li>인간관계</li>
+            <li>취업/커리어</li>
+            <li>건강</li>
+            <li>학업</li>
+            <li>취미</li>
+            <li>소비</li>
+            <li>기타</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <div class="text">
+  <div class="text-left">
+    <div class="text1"><p id="title">제목</p></div>
+    <div class="text2"><p>날짜</p></div>
+  </div>
+  <div class="delete">
+    <img src="../img/Group 75.png" alt="수정 버튼" id="editBtn" />
+  </div>
+</div>
+    <div class="input">
+      <div class="input2">
+        <p>실패담</p>
+        <textarea id="failure" readonly></textarea>
+      </div>
+      <div class="input3">
+        <p>내가 만약 다시 돌아간다면?</p>
+        <textarea id="regret" readonly></textarea>
+      </div>
+    </div>
+
+    <div class="favorite">
+      <img src="../img/favorite_filled.png" alt="" />
+    </div>
+
+    <div class="comment_header">
+      <div class="chat_icon">
+        <img src="../img/chat_bubble.png" alt="" />
+        <span class="comment_count">34</span>
+      </div>
+      <div class="like_icon">
+        <img src="../img/favorite.png" alt="" id="likeBtn" />
+        <span id="likeCount">55</span>
+      </div>
+    </div>
+    <div class="comment_write">
+        <img src="../img/Rectangle 54.png" alt="">
+        <input type="text" placeholder="입력하시오..">
+        <div class="send">
+            <img src="../img/send.png" alt="">
+        </div>
+    </div>
+    <div class="comment">
+      <div class="comment1">
+        <div class="profile1">
+          <img src="../img/Group 66.png" alt="" />
+        </div>
+        <div class="chat1">
+          <img src="../img/Rectangle 51 (1).png" alt="" />
+        </div>
+      </div>
+      <div class="comment2">
+        <div class="profile2">
+          <img src="../img/Group 67.png" alt="" />
+        </div>
+        <div class="chat2">
+          <img src="../img/Rectangle 51 (1).png" alt="" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 수정 버튼 클릭 시 입력창 활성화
+    document.getElementById("editBtn").addEventListener("click", function () {
+      document.getElementById("failure")?.removeAttribute("readonly");
+      document.getElementById("regret")?.removeAttribute("readonly");
+    });
+
+    // 카테고리 메뉴 기능
+    const icon = document.getElementById("categoryIcon");
+    const box = document.getElementById("categoryBox");
+    const menu = document.getElementById("categoryMenu");
+    const selectedText = document.getElementById("selectedCategory");
+
+    icon.addEventListener("click", () => {
+      box.classList.toggle("hidden");
+    });
+
+    menu.addEventListener("click", (e) => {
+      if (e.target.tagName === "LI") {
+        selectedText.textContent = e.target.textContent;
+        selectedText.classList.remove("hidden");
+        icon.classList.add("hidden");
+        box.classList.add("hidden");
+      }
+    });
+
+    // 좋아요 기능
+    const likeBtn = document.getElementById("likeBtn");
+    const likeCount = document.getElementById("likeCount");
+
+    let liked = false;
+    let count = parseInt(likeCount.textContent);
+
+    likeBtn.addEventListener("click", () => {
+      liked = !liked;
+      count += liked ? 1 : -1;
+      likeCount.textContent = count;
+      likeBtn.src = liked ? "../img/favorite_filled.png" : "../img/favorite.png";
+    });
+  </script>
+</body>
+</html>
+

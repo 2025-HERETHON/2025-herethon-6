@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/common/container.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login2.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST" action="{% url 'api:login' %}" class="container">
+        <div class="text">
+            <h1>당신의 <span class="blue">경험</span>을 공유해주세요</h1></div>
+        <div class="input">
+            <input type="text" name="email" placeholder="이메일">
+            <input type="password" name="password" placeholder="비밀번호">
+            
+            <div class="button">
+            <button type="submit">
+                로그인
+            </button>
+            </div>
+            <a href="login.html" class="login_link">회원가입하기</a>          
+        </div>
+    </form>
+    
+</body>
+</html>
