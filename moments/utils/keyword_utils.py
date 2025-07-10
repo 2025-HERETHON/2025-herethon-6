@@ -90,3 +90,24 @@ def save_weekly_keywords():
         print(f"새로운 WeeklyTop3Keyword 저장됨: {entry}")
 
     print("주간 키워드 저장 완료")
+
+def get_weekly_keywords_data(category_id):
+    from django.utils.timezone import now
+    from datetime import timedelta
+    from moments.models import Category, WeeklyTop3Keyword
+
+    today = now().date()
+    week_start = today - timedelta(days=today.weekday())
+
+    try:
+        category = Category.objects.get(pk=category_id)
+    except Category.DoesNotExist:
+        return []
+
+    try:
+        weekly_data = WeeklyTop3Keyword.objects.get(week_start=week_start, category=category)
+        data = weekly_data.keywords
+    except WeeklyTop3Keyword.DoesNotExist:
+        data = []
+
+    return data
