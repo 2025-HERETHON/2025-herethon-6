@@ -15,17 +15,21 @@ User = get_user_model()
 def main(request):
 
     # 전체 인기글 Top3
-    top3_overall = Moment.objects.annotate(like_count=Count('likes'))
+    top3_overall = Moment.objects.annotate(like_count=Count('likes')).order_by('-like_count', '-created_date')[:3]
     
     # 각 카테고리별 인기글 Top3 딕셔너리로 저장
     categories = Category.objects.all()
     top3_by_category = {}
 
     for category in categories:
-        moments = Moment.objects.filter(category_id=category).annotate(like_count=Count('likes')).order_by('-like_count', '-created_date')[:3]
+        moments = Moment.objects.filter(category_id=category.category_id).annotate(like_count=Count('likes')).order_by('-like_count', '-created_date')[:3]
         top3_by_category[category] = moments
 
-    return render(request, 'moments/main.html', {
+    print(top3_overall.count())  # 글 총 개수
+    for m in top3_overall:
+        print(m.title, m.like_count)
+
+    return render(request, 'main.html', {
     'top3_overall': top3_overall,
     'top3_by_category': top3_by_category,})
 

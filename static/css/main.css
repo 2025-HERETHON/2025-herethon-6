@@ -15,18 +15,17 @@
 
 .top {
     display: flex;
-    width: 377px;
-    justify-content: space-between;
+    width: 100%;
     margin-top: 26px;
-    margin-left: 19px;
+    margin-left: 20px;
+    gap: 200px;
 }
 
 .tab {
     display: flex;
-    gap: 11px;
 }
 
-#btn {
+.btn {
     cursor: pointer;
 }
 
@@ -36,8 +35,11 @@
     gap: 10px;
     display: grid;
     grid-template-columns: repeat(4, 1fr); 
-    overflow-y: auto;
     margin-top: 16px;
+}
+
+.categories a {
+    height: 40px;
 }
 
 .categories a button {
@@ -54,6 +56,10 @@
     font-weight: 400;
     line-height: normal;
     cursor: pointer;
+}
+
+.categories button.active {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), #FFF;
 }
 
 .box {

@@ -88,7 +88,9 @@
             {% include "components/navbar.html" %}
         </div>
     </div>
-
-  <script src="../js/category.js"></script>
+    <script>
+        const category = "{{ selected_category }}"
+    </script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
