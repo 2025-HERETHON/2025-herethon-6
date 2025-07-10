@@ -2,34 +2,51 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.shortcuts import render, get_object_or_404
 from django.utils.timezone import now
-from ..models import Moment, If, Category, Image
+from ..models import Moment, If, Category, Image, Moment, Category, Like
 from comments.models import Comment
 from oopsie.utils import response_success, response_error
 from ..image_utils import upload_to_s3, delete_from_s3
 from urllib.parse import urlparse
 from django.contrib.auth import get_user_model
+from django.db.models import Count
 
 User = get_user_model()
+
+def main(request):
+
+    # 전체 인기글 Top3
+    top3_overall = Moment.objects.annotate(like_count=Count('likes'))
+    
+    # 각 카테고리별 인기글 Top3 딕셔너리로 저장
+    categories = Category.objects.all()
+    top3_by_category = {}
+
+    for category in categories:
+        moments = Moment.objects.filter(category_id=category).annotate(like_count=Count('likes')).order_by('-like_count', '-created_date')[:3]
+        top3_by_category[category] = moments
+
+    return render(request, 'moments/main.html', {
+    'top3_overall': top3_overall,
+    'top3_by_category': top3_by_category,})
 
 def moment_create_view(request):
     return render(request, 'moments/moment_create.html')
 
 
-def moment_list_view(request):
-    category_id = request.GET.get("category_id")
-
-    if category_id:
-        try:
-            category = Category.objects.get(category_id=int(category_id))
-            moments = Moment.objects.filter(category_id=category)
-        except (ValueError, Category.DoesNotExist):
-            moments = Moment.objects.none()
-    else:
-        moments = Moment.objects.all()
-
-    return render(request, 'moments/moment_list.html', {
+def moment_list_view(request, category_id):
+    # category_id를 직접 받아서 필터링
+    moments = Moment.objects.filter(category_id=category_id)
+    
+    sort = request.GET.get('sort', 'latest')
+    if sort == 'popular':
+        moments = moments.annotate(like_count=Count('likes')).order_by('-like_count', '-created_date')
+    else:  
+        moments = moments.order_by('-created_date')
+    
+    return render(request, 'moment_list.html', {
         'moments': moments,
-        'category_id': category_id  # 선택된 카테고리 표시용
+        'selected_category': category_id,  # 필요하면 이름으로 바꿔줄 수도 있음
+        'sort': sort,
     })
 
 def moment_detail_view(request, moment_id):
@@ -38,11 +55,14 @@ def moment_detail_view(request, moment_id):
     comments = Comment.objects.filter(moment=moment)    
     comment_count = comments.count()
 
+    like_count = Like.objects.filter(moment=moment).count()
+
     return render(request, 'moments/moment_detail.html', {
         'moment': moment,
         'images': images,
         'comments': comments,
         'comment_count': comment_count, # 댓글수도 넘겨줌
+        'like_count': like_count
     })
 
 def moment_update_view(request, moment_id):
