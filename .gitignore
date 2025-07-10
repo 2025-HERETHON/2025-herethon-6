@@ -12,5 +12,4 @@ conf.py
 .jpeg
 .gif
 .myvenv/
-
 test.py
