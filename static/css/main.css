@@ -73,7 +73,7 @@
     margin-bottom: 47px;
 }
 
-.name {
+.top3-ex {
     display: flex;
     align-items: center;
     color: #000;
@@ -83,6 +83,19 @@
     font-weight: 700;
     line-height: normal;
     width: 361px;
+}
+
+.name {
+    display: flex;
+    align-items: center;
+    color: #000;
+    font-family: Inter;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    width: 100%;
+    margin-left: 19px;
 }
 
 .top3-ex {
