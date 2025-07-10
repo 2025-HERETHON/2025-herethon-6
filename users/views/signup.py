@@ -7,7 +7,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.db import IntegrityError
 from django.http import HttpResponseRedirect
-from models import CustomUser
 
 @csrf_exempt
 def signup_view(request):
