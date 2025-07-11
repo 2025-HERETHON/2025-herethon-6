@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{{ moment.title }}</title>
     <link rel="stylesheet" href="{% static 'css/common/container.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/comment_write.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/moment_detail.css' %}" />
 </head>
 <body>
     <div class="container">
@@ -34,16 +34,34 @@
             </div>
         </div>
 
-        <div class="input">
-            <div class="input2">
-                <p>실패담</p>
-                <textarea id="failure" readonly>{{ moment.content }}</textarea>
-            </div>
-            <div class="input3">
-                <p>내가 만약 다시 돌아간다면?</p>
-                <textarea id="regret" readonly>{% if if_contents %}{{ if_contents.0.if_content }}{% else %}내용이 없습니다.{% endif %}</textarea>
-            </div>
-        </div>
+<div class="input">
+  <!-- 실패담 박스 -->
+  <div class="input2">
+    <p>실패담</p>
+    <p>{{ moment.content }}</p>
+    <div class="images">
+      {% for image in images %}
+        <img src="{{ image.image_url }}" alt="{{ image.image_name }}" />
+      {% endfor %}
+    </div>
+  </div> <!-- ✅ 실패담 박스 여기서 닫아야 함 -->
+
+  <!-- 내가 만약 다시 돌아간다면 박스 -->
+  <div class="input3">
+    <p>내가 만약 다시 돌아간다면?</p>
+    <p>
+      {% if if_contents %}
+        {{ if_contents.0.if_content }}
+      {% else %}
+        내용이 없습니다.
+      {% endif %}
+    </p>
+  </div>
+</div>
+
+
+
+
 
         <div class="favorite">
             <img src="{% static 'assets/imges/favorite_filled.png' %}" alt="좋아요 아이콘" />
@@ -60,11 +78,6 @@
             </div>
         </div>
 
-        <div class="images">
-            {% for image in images %}
-            <img src="{{ image.image_url }}" alt="{{ image.image_name }}" />
-            {% endfor %}
-        </div>
 
         <div class="comment">
             {% for comment in comments %}

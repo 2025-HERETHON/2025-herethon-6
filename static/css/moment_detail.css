@@ -7,6 +7,37 @@
   margin-left: 14px;
 }
 
+
+.images img {
+  display: block;
+  max-height: 200px;     /* 세로 최대 200px */
+  width: auto;           /* 가로는 비율에 따라 자동 조절 */
+  object-fit: contain;   /* 비율 유지하며 꽉 채우기 */
+  margin: 0 auto;
+  border-radius: 10px;
+}
+.failure-box {
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+.regret-box {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 15px;
+    font-family: inherit;
+    font-size: 14px;
+    color: #000;
+    white-space: pre-line;  /* 줄바꿈 유지 */
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+
 .profile {
   margin-top: 16px;
   margin-left: 10px;
@@ -128,9 +159,13 @@
   background-size: cover;
   background-position: center;
   width: 354px;
-  height: 215px;
+  min-height: 200px;
   position: relative;
   margin: 20px;
+}
+
+.input3 {
+  margin-top: 20px;
 }
 
 .input2 p,
