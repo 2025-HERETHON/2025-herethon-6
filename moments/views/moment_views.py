@@ -10,6 +10,10 @@ from urllib.parse import urlparse
 from django.contrib.auth import get_user_model
 from django.db.models import Count
 from ..utils.keyword_utils import get_weekly_keywords_data, save_weekly_keywords
+<<<<<<< HEAD
+=======
+from django.http import JsonResponse
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
 
 User = get_user_model()
 
@@ -59,6 +63,10 @@ def moment_list_view(request, category_id):
         'selected_category': category,
         'sort': sort,
         'top_keywords': top_keywords,
+<<<<<<< HEAD
+=======
+
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
     })
 
 def moment_detail_view(request, moment_id):
@@ -68,18 +76,52 @@ def moment_detail_view(request, moment_id):
     comment_count = comments.count()
     like_count = Like.objects.filter(moment=moment).count()
 
+<<<<<<< HEAD
+=======
+    if_contents = If.objects.filter(moment_id=moment).order_by('created_date')
+
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
     return render(request, 'moment_detail.html', {
         'moment': moment,
         'images': images,
         'comments': comments,
         'comment_count': comment_count, # 댓글수도 넘겨줌
+<<<<<<< HEAD
         'like_count': like_count
+=======
+        'like_count': like_count,
+        'if_contents': if_contents
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
     })
 
 def moment_update_view(request, moment_id):
     moment = get_object_or_404(Moment, moment_id=moment_id)
     return render(request, 'moment_update.html', {'moment': moment})
 
+<<<<<<< HEAD
+=======
+
+def toggle_like(request, moment_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'POST 요청만 허용됩니다.'}, status=405)
+
+    moment = get_object_or_404(Moment, pk=moment_id)
+    user = request.user
+
+    like, created = Like.objects.get_or_create(user=user, moment=moment)
+    if not created:
+        like.delete()
+        liked = False
+    else:
+        liked = True
+
+    like_count = Like.objects.filter(moment=moment).count()
+
+    return JsonResponse({'liked': liked, 'like_count': like_count})
+
+
+
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
 '''
 # 글 생성 or 목록조회 분기
 @csrf_exempt
@@ -120,8 +162,11 @@ def moment_create(request):
     content = request.POST.get('content')
     if_content = request.POST.get('if_content')
     category_id = request.POST.get('category_id')
+<<<<<<< HEAD
     
 
+=======
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
 
     # 필수 항목 검사
     if not all([title, content, if_content, category_id]):
@@ -169,6 +214,12 @@ def moment_create(request):
         data = { 
             "moment_id": moment.moment_id,
         }
+<<<<<<< HEAD
+=======
+
+        #return response_success(data, message="글 작성 완료")
+
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
         return redirect(f"/pages/moments/{moment.moment_id}/detail")
         
 
@@ -213,7 +264,11 @@ def moment_detail(request, moment_id):
         # Moment 조회 (+ user, category join)
         moment = Moment.objects.select_related('user_id', 'category_id').get(moment_id=moment_id)
 
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
         # 연결된 If 가져오기
         if_content = moment.if_moment.if_content  
 

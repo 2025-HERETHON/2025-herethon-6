@@ -1,5 +1,9 @@
 from django.urls import path, include
+<<<<<<< HEAD
 from .views.moment_views import moment_create, moment_list, moment_detail, moment_update, moment_delete
+=======
+from .views.moment_views import moment_create, moment_list, moment_detail, moment_update, moment_delete, toggle_like
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
 from .views.image_views import images_by_moment, delete_image
 from .views.keyword_views import get_weekly_keywords
 
@@ -18,7 +22,15 @@ urlpatterns = [
     # 댓글 관련 path
     path('<int:moment_id>/comments/', include('comments.urls')),
     
+<<<<<<< HEAD
     
     path('weekly_keywords/<int:category_id>/', get_weekly_keywords, name='weekly_keywords'),
 
+=======
+    # top3 관련 path
+    path('weekly_keywords/<int:category_id>/', get_weekly_keywords, name='weekly_keywords'),
+    
+    # 좋아요 관련 path
+    path('<int:moment_id>/toggle_like/', toggle_like, name='toggle_like'),
+>>>>>>> f2a3440eff29d4a8ff64b46c57f9ea06c9302d24
 ]
