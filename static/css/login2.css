@@ -29,7 +29,7 @@ h1 {
 }
 
 .input1, .input2 {
-    background-image: url(./img/Rectangle\ 61.png);
+    background-image: url(../assets/imges/Rectangle\ 61.png);
     background-size: cover;
     background-position: center;
     width: 333px;
@@ -55,7 +55,7 @@ h1 {
 }
 
 .button {
-    background-image: url(./img/Rectangle\ 55.png);
+    background-image: url(../assets/imges/Rectangle\ 55.png);
     background-size: cover;
     background-position: center;
     width: 155px;

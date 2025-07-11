@@ -1,145 +1,146 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Document</title>
-  <link rel="stylesheet" href="../container.css" />
-  <link rel="stylesheet" href="../css/comment_write.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>작성 페이지</title>
+  <link rel="stylesheet" href="{% static 'css/common/container.css' %}">
+  <link rel="stylesheet" href="{% static 'css/write.css' %}">
 </head>
 <body>
   <div class="container">
     <div class="header">
       <div class="back">
-        <a href="#"><img src="../img/arrow_back.png" alt="뒤로가기" /></a>
+        <a href="#"><img src="{% static 'assets/imges/arrow_back.png' %}" alt="뒤로가기^!!!^"></a>
       </div>
       <div class="profile">
         <div class="img">
-          <img src="../img/Group 59.png" alt="프로필 이미지" />
+          <img src="../static/assets/imges/Group 59.png" alt="프로필 이미지">
         </div>
-        <div class="name">
-          <p>바그바그</p>
-        </div>
+        <div class="name"><p>바그바그</p></div>
       </div>
       <div class="category">
-        <img src="../img/Group 85.png" id="categoryIcon" alt="카테고리 아이콘" />
+        <img src="../static/assets/imges/Group 85.png" id="categoryIcon" alt="카테고리 아이콘"> 
         <div id="selectedCategory" class="hidden"></div>
         <div class="category-box hidden" id="categoryBox">
-          <img src="../img/Group 86.png" alt="카테고리 배경" class="category-bg" />
+          <img src="../static/assets/imges/Group 86.png" alt="카테고리 배경" class="category-bg">
           <ul class="category-menu" id="categoryMenu">
-            <li>연애</li>
-            <li>인간관계</li>
-            <li>취업/커리어</li>
-            <li>건강</li>
-            <li>학업</li>
-            <li>취미</li>
-            <li>소비</li>
-            <li>기타</li>
+            <li data-id="1">연애</li>
+            <li data-id="2">인간관계</li>
+            <li data-id="3">취업/커리어</li>
+            <li data-id="4">건강</li>
+            <li data-id="5">학업</li>
+            <li data-id="6">취미</li>
+            <li data-id="7">소비</li>
+            <li data-id="8">기타</li>
           </ul>
         </div>
       </div>
     </div>
-  <div class="text">
-  <div class="text-left">
-    <div class="text1"><p id="title">제목</p></div>
-    <div class="text2"><p>날짜</p></div>
-  </div>
-  <div class="delete">
-    <img src="../img/Group 75.png" alt="수정 버튼" id="editBtn" />
-  </div>
-</div>
-    <div class="input">
+    <!--
+    <div class="image">
+      <img src="../img/add_photo_alternate.png" alt="사진 추가" id="imageBtn">
+      <div class="image-box hidden" id="imageBox">
+        <div class="dropdown-btn" id="dropdownBtn">최근 이미지 ▼</div>
+        <ul class="dropdown-menu hidden" id="dropdownMenu">
+          <li>즐겨찾는 항목</li>
+          <li>비디오</li>
+          <li>셀피</li>
+          <li>인물사진</li>
+          <li>타임랩스</li>
+          <li>스크린샷</li>
+          <li>화면기록</li>
+        </ul>
+      </div>
+    </div>
+  -->
+    <form method="POST" action="http://127.0.0.1:8000/moments/create/" enctype="multipart/form-data">
+      <div class="input1">
+        <p>제목</p>
+        <input type="text" id="title" name="title">
+      </div>
+      <input type="hidden" name="category_id" id="categoryIdInput">
       <div class="input2">
         <p>실패담</p>
-        <textarea id="failure" readonly></textarea>
+        <textarea id="failure"  name="content"></textarea>
       </div>
       <div class="input3">
         <p>내가 만약 다시 돌아간다면?</p>
-        <textarea id="regret" readonly></textarea>
+        <textarea id="regret" name="if_content"></textarea>
       </div>
-    </div>
-
-    <div class="favorite">
-      <img src="../img/favorite_filled.png" alt="" />
-    </div>
-
-    <div class="comment_header">
-      <div class="chat_icon">
-        <img src="../img/chat_bubble.png" alt="" />
-        <span class="comment_count">34</span>
+      <div class="input4">
+        <p>이미지 첨부</p>
+        <input type="file" name="images" accept="image/*" multiple>
       </div>
-      <div class="like_icon">
-        <img src="../img/favorite.png" alt="" id="likeBtn" />
-        <span id="likeCount">55</span>
+      <div class="button">
+        <button type="submit">작성하기</button>
       </div>
-    </div>
-    <div class="comment_write">
-        <img src="../img/Rectangle 54.png" alt="">
-        <input type="text" placeholder="입력하시오..">
-        <div class="send">
-            <img src="../img/send.png" alt="">
-        </div>
-    </div>
-    <div class="comment">
-      <div class="comment1">
-        <div class="profile1">
-          <img src="../img/Group 66.png" alt="" />
-        </div>
-        <div class="chat1">
-          <img src="../img/Rectangle 51 (1).png" alt="" />
-        </div>
-      </div>
-      <div class="comment2">
-        <div class="profile2">
-          <img src="../img/Group 67.png" alt="" />
-        </div>
-        <div class="chat2">
-          <img src="../img/Rectangle 51 (1).png" alt="" />
-        </div>
-      </div>
-    </div>
+    </form>
   </div>
 
-  <script>
-    // 수정 버튼 클릭 시 입력창 활성화
-    document.getElementById("editBtn").addEventListener("click", function () {
-      document.getElementById("failure")?.removeAttribute("readonly");
-      document.getElementById("regret")?.removeAttribute("readonly");
-    });
+<script>
+  // 1. 카테고리 관련 요소 선택
+  const icon = document.getElementById("categoryIcon");
+  const box = document.getElementById("categoryBox");
+  const menu = document.getElementById("categoryMenu");
+  const selectedText = document.getElementById("selectedCategory");
+  const categoryIdInput = document.getElementById("categoryIdInput"); // 💡 hidden input
 
-    // 카테고리 메뉴 기능
-    const icon = document.getElementById("categoryIcon");
-    const box = document.getElementById("categoryBox");
-    const menu = document.getElementById("categoryMenu");
-    const selectedText = document.getElementById("selectedCategory");
+  // 2. 카테고리 아이콘 클릭 시 메뉴 토글
+  icon.addEventListener("click", () => {
+    box.classList.toggle("hidden");
+  });
 
-    icon.addEventListener("click", () => {
-      box.classList.toggle("hidden");
-    });
+  // 3. 카테고리 메뉴 클릭 시 텍스트 및 ID 설정
+  menu.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+      const selectedName = e.target.textContent;
+      const selectedId = e.target.getAttribute("data-id");
 
-    menu.addEventListener("click", (e) => {
-      if (e.target.tagName === "LI") {
-        selectedText.textContent = e.target.textContent;
-        selectedText.classList.remove("hidden");
-        icon.classList.add("hidden");
-        box.classList.add("hidden");
-      }
-    });
+      selectedText.textContent = selectedName;
+      selectedText.classList.remove("hidden");
+      box.classList.add("hidden");
 
-    // 좋아요 기능
-    const likeBtn = document.getElementById("likeBtn");
-    const likeCount = document.getElementById("likeCount");
+      // hidden input에 ID 저장
+      categoryIdInput.value = selectedId;
+    }
+  });
 
-    let liked = false;
-    let count = parseInt(likeCount.textContent);
+  // 4. 이미지 메뉴 관련 요소
+  const imageBtn = document.getElementById("imageBtn");
+  const imageBox = document.getElementById("imageBox");
 
-    likeBtn.addEventListener("click", () => {
-      liked = !liked;
-      count += liked ? 1 : -1;
-      likeCount.textContent = count;
-      likeBtn.src = liked ? "../img/favorite_filled.png" : "../img/favorite.png";
-    });
-  </script>
+  imageBtn.addEventListener("click", () => {
+    imageBox.classList.toggle("hidden");
+    dropdownMenu.classList.add("hidden");
+  });
+
+  // 5. 드롭다운 토글
+  const dropdownBtn = document.getElementById("dropdownBtn");
+  const dropdownMenu = document.getElementById("dropdownMenu");
+
+  dropdownBtn.addEventListener("click", () => {
+    dropdownMenu.classList.toggle("hidden");
+  });
+
+  // 6. 드롭다운 선택 시 텍스트 변경
+  dropdownMenu.addEventListener("click", (e) => {
+    if (e.target.tagName === "LI") {
+      dropdownBtn.textContent = e.target.textContent + " ▼";
+      dropdownMenu.classList.add("hidden");
+    }
+  });
+
+    const form = document.querySelector("form");
+  form.addEventListener("submit", function (e) {
+    if (!categoryIdInput.value) {
+      alert("카테고리를 선택해주세요.");
+      e.preventDefault();  // 제출 막기
+    }
+  });
+</script>
+
 </body>
 </html>
-

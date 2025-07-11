@@ -5,8 +5,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/signup.css' %}">
   <link rel="stylesheet" href="{% static 'css/common/container.css' %}">
 
   <title>회원가입</title>
@@ -19,7 +19,7 @@
 
     <form method="POST" action="{% url 'users:signup' %}">
       {% csrf_token %}
-      
+
       {% if error %}
         <p style="color: red;">{{ error }}</p>
       {% endif %}
@@ -33,14 +33,15 @@
       <div class="input3">
         <input type="password" name="password" placeholder="비밀번호" required>
       </div>
-      <a href="{% url 'users:signup' %}">
-        <button type="submit">회원가입</button>
-      </a>  
-      </div>
-      <a href="{% url 'users:login' %}" class="login_link">이미 계정이 있으신가요? 로그인</a>
-    </form>
 
-    
+      <div class="button">
+        <button type="submit">회원가입</button>
+      </div>
+
+      <a href="{% url 'users:login' %}" class="login_link">
+        이미 계정이 있으신가요? 로그인
+      </a>
+    </form>
   </div>
 </body>
 </html>

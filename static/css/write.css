@@ -29,21 +29,22 @@
     flex-direction: column;
     align-items: center;
     gap: 16px; 
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .input1{
     background-image: url(../assets/imges/Rectangle\ 51.png);
-    margin-top: 20px;
     background-size: cover;
     background-position: center;
     width: 354px;
     height: 77px;
+    margin: 50px 20px 0px 20px;
     position: relative;
     p{
         font-size: 20px;
         font-weight: bold;
         margin-top: -10%;
+        position: absolute;
         margin-left: 10px;
     }
 }
@@ -55,16 +56,28 @@
     width: 354px;
     height: 215px;
     position: relative;
-    margin: 20px;
+    margin: 40px 20px 40px 20px;
      p{
         font-size: 15px;
         font-weight: bold;
         margin-top: -7%;
+        position: absolute;
         margin-left: 10px;
     }
 }
 
 .input input {
+    position: absolute;
+    width: 333px;
+    height: 77px;
+    padding-left: 15px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+
+.input1 input {
     position: absolute;
     width: 333px;
     height: 77px;
@@ -177,9 +190,11 @@ textarea {
     background-image: url(../assets/imges/Rectangle\ 39.png);
     background-size: cover;
     background-position: center;
+    position: absolute;
     width: 155px;
     height: 69px;
-    margin-top: -5%;
+    margin-top: 5%;
+    margin-left: 30%;
     position: relative;
     display: flex;
     align-items: center;
@@ -199,21 +214,25 @@ textarea {
 }
 
 .category {
-  position: relative;
+  position: relative; /* 이게 기준! */
   margin-left: auto;
   margin-right: 16px;
   margin-top: 40px;
   cursor: pointer;
+  display: inline-block; /* inline-block으로 영역 최소화 */
+  z-index: 20;
 }
 
 .category-box {
-  position: absolute;
-  top: 0%;
+  position: absolute;      
+  top: 100%;               
   right: 0;
   width: 83px;
   height: auto;
-  z-index: 10;
+  z-index: 30;
+  background-color: white;
 }
+
 
 .category-bg {
   width: 90px;
@@ -264,6 +283,7 @@ textarea {
 #selectedCategory {
       background-image: url(../assets/imges/Rectangle\ 57.png);
       color: #9D9D9D;
+      position: absolute;
       width: 85px;
       height: 31px;
       text-align: center;
@@ -275,3 +295,26 @@ textarea {
 .hidden {
     display: none;
 }
+
+.image-upload {
+  position: absolute;
+  width: 20px;   /* 아이콘 크기에 따라 조절 */
+  height: 20px;
+  margin: 20px 30px 30px 70px;
+  cursor: pointer;
+}
+
+/* input 숨기기 */
+.image-upload input[type="file"] {
+  display: none;
+}
+
+/* 아이콘 크기 지정 */
+.upload-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+  margin-left: -20%;
+}
+

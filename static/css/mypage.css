@@ -28,16 +28,33 @@
 .mypage_box{
     background-image: url(../assets/imges/Rectangle\ 59.png);
     background-repeat: no-repeat;
-    margin-left: 35px;
     width: 330px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
     height: 445px;
 }
 
 .mypage_box ul {
     left: -20px;
     position: relative;
+    margin: 20px;
     display: flex;
     flex-direction: column;
+}
+
+.section1, .section2, .section3, .section4 ,.section5{
+    img{
+        margin-bottom: -15px;
+    }
+}
+
+.section1{
+    margin-top: -10%;
+}
+
+.section5{
+    img{display: none;}
 }
 
 .mypage_box li {
@@ -51,6 +68,7 @@
 
 .mypage_box li:last-child {
   border-bottom: none;
+  img{display: none;}
 }
 
 .mypage_box a {
@@ -88,3 +106,4 @@
 .link:visited {
   color: black;
   text-decoration: none;
+}

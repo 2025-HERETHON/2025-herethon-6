@@ -1,16 +1,19 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../css/mypage.css">
-    <link rel="stylesheet" href="../container.css">
+    <link rel="stylesheet" href="{% static 'css/mypage.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common/container.css' %}">
 </head>
 <body>
     <div class="container">
         <div class="profile">
-            <img src="../img/Group 42.png" alt="">
+            <img src="{% static 'assets/imges/Group 42.png' %}" alt="">
             <p>바그바그</p>
         </div>
         <div class="mypage">
@@ -18,31 +21,36 @@
             <img src="../img/Rectangle 59.png" alt="">
             <div class="section1">
                 <a href="" class="link">이메일</a>
-            <img src="../img/Line 34.png" alt=""></div>
+            <img src="{% static 'assets/imges/Line 34.png' %}" alt=""></div>
             <div class="section2">
                 <a href="" class="link">회원정보 수정하기</a>
-            <img src="../img/Line 34.png" alt=""></div>
+            <img src="{% static 'assets/imges/Line 34.png' %}" alt=""></div>
             <div class="section3">
                 <a href="" class="link">내가 쓴 글</a>
-            <img src="../img/Line 34.png" alt=""></div>
+            <img src="{% static 'assets/imges/Line 34.png' %}" alt=""></div>
             <div class="section4">
                 <a href="" class="link">좋아요 한 글</a>
-            <img src="../img/Line 34.png" alt=""></div>
+            <img src="{% static 'assets/imges/Line 34.png' %}" alt=""></div>
             <div class="section5">
-                <a href="login.html" class="link">로그아웃</a>
-            <img src="../img/Line 34.png" alt=""></div>            
+                <a href="./login.html" class="link">로그아웃</a>
+            <img src="{% static 'assets/imges/Line 34.png' %}" alt=""></div>            
             </div></div>
         
-        <div class="footer">
+        <!-- <div class="footer">
             <div class="logo">
             <div class="logo1">
                 <a href="../"></a>
-                <img src="../img/home.png" alt=""></div>
+                <img src="{% static 'assets/imges/home 34.png' %}" alt=""></div>
             <div class="logo2">
-                <a href="write.html" class="link"></a>
-                <img src="../img/border_color.png" alt=""></div>
+                <a href="./moment_create.html" class="link"></a>
+                <img src="{% static 'assets/imges/border_color.png' %}" alt=""></div>
             <div class="logo3">
-                <img src="../img/account_circle.png" alt=""></div>
+                <a href="./mypage.html" class="link"></a>
+                <img src="{% static 'assets/imges/account_circle.png' %}" alt=""></div>
+        </div> -->
+
+        <div id="nb">
+            {% include "components/navbar.html" %}
         </div>
     </div>
     </div>

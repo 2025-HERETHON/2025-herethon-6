@@ -13,19 +13,21 @@
   <div class="container">
     <div class="header">
       <div class="back">
-        <a href="#"><img src="../img/arrow_back.png" alt="뒤로가기"></a>
+        <a href="javascript:history.back()">
+    <img src="{% static 'assets/imges/arrow_back.png' %}" alt="뒤로가기^^~">
+  </a>
       </div>
       <div class="profile">
         <div class="img">
-          <img src="../img/Group 59.png" alt="프로필 이미지">
+          <img src="{% static 'assets/imges/Group 59.png' %}" alt="프로필 이미지">
         </div>
         <div class="name"><p>바그바그</p></div>
       </div>
       <div class="category">
-        <img src="../img/Group 85.png" id="categoryIcon" alt="카테고리 아이콘"> 
+        <img src="{% static 'assets/imges/Group 85.png' %}" id="categoryIcon" alt="카테고리 아이콘"> 
         <div id="selectedCategory" class="hidden"></div>
         <div class="category-box hidden" id="categoryBox">
-          <img src="../img/Group 86.png" alt="카테고리 배경" class="category-bg">
+          <img src="{% static 'assets/imges/Group 86.png' %}" alt="카테고리 배경" class="category-bg">
           <ul class="category-menu" id="categoryMenu">
             <li data-id="1">연애</li>
             <li data-id="2">인간관계</li>
@@ -70,10 +72,12 @@
         <p>내가 만약 다시 돌아간다면?</p>
         <textarea id="regret" name="if_content"></textarea>
       </div>
-      <div class="input4">
-        <p>이미지 첨부</p>
-        <input type="file" name="images" accept="image/*" multiple>
-      </div>
+      <div class="image-upload">
+  <label for="imageInput">
+    <img src="{% static 'assets/imges/add_photo_alternate.png' %}" alt="사진 추가" class="upload-icon">
+  </label>
+  <input type="file" id="imageInput" name="images" accept="image/*" multiple>
+</div>
       <div class="button">
         <button type="submit">작성하기</button>
       </div>
